@@ -1,0 +1,265 @@
+@import "tailwindcss";
+
+@tailwind utilities;
+
+@theme {
+  
+
+    --radius-lg: var(--radius);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-sm: calc(var(--radius) - 4px);
+
+    --color-dark: var(--dark);
+    --color-primary: var(--primary);
+    --color-primary-light: var(--primary-light);
+    --color-primary-dark: var(--primary-dark);
+    --color-primary-subtle: var(--primary-subtle);
+    --color-gray-dark: var(--gray-dark);
+    --color-gray-light: var(--gray-light);
+    --color-white: var(--white);
+
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+
+    /* --- */
+    --breakpoint-xxs: 30rem; /* 480 */
+    --breakpoint-xs: 40rem; /* 640 */
+    --breakpoint-sm: 48rem; /* 768 */
+    --breakpoint-md: 64rem; /* 1024 */
+    --breakpoint-lg: 80rem; /* 1280 */
+    --breakpoint-wlg: 85rem; /* 1360 */
+    --breakpoint-xl: 90rem; /* 1440 */
+    --breakpoint-2xl: 96rem; /* 1536 */
+    --breakpoint-3xl: 120rem; /* 1920 */
+
+    --color-brand-prose: var(--brand-prose);
+    --color-brand-green: var(--brand-green);
+
+    --color-brand-primary: var(--brand-primary);
+    --color-brand-secondary: var(--brand-secondary);
+
+    --color-brand-links: var(--brand-links);
+    --color-brand-panels: var(--brand-panels);
+    --color-brand-headings: var(--brand-headings-black);
+
+    --drop-shadow-banner-heading: var(--banner-heading-shadow);
+
+    --shadow-header: var(--sticky-header-shadow);
+    --shadow-desktop-burger: var(--desktop-burger-shadow);
+}
+
+:root {
+    --breakpoint-xs: 480px;
+    --breakpoint-sm: 768px;
+    --breakpoint-md: 1024px;
+    --breakpoint-lg: 1280px;
+    --breakpoint-xl: 1536px;
+    --breakpoint-2xl: 1920px;
+
+    --dark: #050105;
+    --primary: #6A0572;
+    --primary-light: '#861A88';
+    --primary-dark: #5A0460;
+    --primary-subtle: #6623751a;
+    --gray-dark: #312f33;
+    --gray-light: #9c999e;
+    --white: #fff;
+
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.145 0 0);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.145 0 0);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0 0);
+    --primary-foreground: oklch(0.985 0 0);
+    --secondary: oklch(0.97 0 0);
+    --secondary-foreground: oklch(0.205 0 0);
+    --muted: oklch(0.97 0 0);
+    --muted-foreground: oklch(0.556 0 0);
+    --accent: oklch(0.97 0 0);
+    --accent-foreground: oklch(0.205 0 0);
+    --destructive: oklch(0.577 0.245 27.325);
+    --destructive-foreground: oklch(0.577 0.245 27.325);
+    --border: oklch(0.922 0 0);
+    --input: oklch(0.922 0 0);
+    --ring: oklch(0.87 0 0);
+    --chart-1: oklch(0.646 0.222 41.116);
+    --chart-2: oklch(0.6 0.118 184.704);
+    --chart-3: oklch(0.398 0.07 227.392);
+    --chart-4: oklch(0.828 0.189 84.429);
+    --chart-5: oklch(0.769 0.188 70.08);
+    --radius: 0.625rem;
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.145 0 0);
+    --sidebar-primary: oklch(0.205 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.97 0 0);
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-ring: oklch(0.87 0 0);
+
+    /* --- */
+    --brand-prose: #374151;
+    --brand-green: #43b02a;
+
+    --brand-primary: #007041;
+    --brand-secondary: #005844;
+    --brand-greypanel: #f5f7fb;
+
+    --brand-links: #1f1f1f;
+
+    --brand-panels: #dce7e4;
+    --brand-headings-black: #00362a;
+
+    --banner-heading-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
+    --sticky-header-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 0.16);
+    --desktop-burger-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+}
+
+@utility container {
+    padding-inline: 1rem;
+    margin-inline: auto;
+    max-width: 100%;
+
+    @variant xs {
+        padding-inline: 2rem;
+        max-width: 640px;
+    }
+    @variant sm {
+        padding-inline: 2rem;
+        max-width: 768px;
+    }
+
+    @variant md {
+        padding-inline: 4rem;
+        max-width: 1024px;
+    }
+
+    @variant lg {
+        padding-inline: 5rem;
+        max-width: 1280px;
+    }
+    @variant xl {
+        padding-inline: 6rem;
+        max-width: 1440px;
+    }
+    @variant 2xl {
+        padding-inline: 8rem;
+        max-width: 1536px;
+    }
+    @variant 3xl {
+        padding-inline: 20rem;
+        max-width: 1920px;
+    }
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--white);
+    font-weight: normal;
+    line-height: 1.5;
+    color: #1f1f1f;
+    height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#root{
+    height: 100dvh;
+}
+/* a {
+    color: #1f1f1f;
+} */
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+    .header-container {
+        @apply relative mx-auto w-full px-2.5 min-[1700px]:!px-[60px] sm:px-[30px] lg:px-2.5;
+    }
+    .grid-container {
+        @apply mx-auto max-w-[1440px] px-2.5 sm:max-lg:px-[30px] lg:max-xl:px-[15px];
+    }
+}
+a:focus:focus,
+button:focus:focus,
+input:focus:focus,
+textarea:focus:focus,
+.form-control:focus:focus,
+.btn:focus:focus,
+.custom-select:focus:focus,
+.custom-range:focus:focus,
+.page-link:focus:focus,
+select:focus:focus,
+.ui-selectmenu-button.ui-button:focus {
+    outline-style: dashed;
+    outline-color: #808080;
+    outline-width: 2px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
