@@ -26,10 +26,16 @@ const galleryData = computed(() => {
 
 <template>
   <div class="grid-container">
-    <div class="flex gap-6">
+    <div class="flex justify-between mb-4 sm:mb-6 md:mb-8 items-center">
+        <h1 class="text-xl sm:text-3xl font-bold text-primary">{{ car?.name }}</h1>
+
+        <div>
+        <CustomButton text="book the car already" @click="isModalOpen = true"/>
+      </div>
+    </div>
+    <div class="flex gap-6 mb-4 sm:mb-6 md:mb-8">
       <div class="w-1/2">
-        <h1 class="text-3xl font-bold mb-4 text-primary">{{ car?.name }}</h1>
-        <h2 class="text-xl font-semibold text-dark">{{ car?.price }}$ / day</h2>
+        <h2 class="text-xl font-semibold text-dark mb-4 sm:mb-6 md:mb-8">{{ car?.price }}$ / day</h2>
         <div class="w-full">
           <NuxtImg
             class="aspect-[480/240] rounded-lg h-full w-full object-cover"
@@ -43,9 +49,10 @@ const galleryData = computed(() => {
           <Gallery :gallery-data="galleryData" />
         </div>
       </div>
-      <div>
-        <CustomButton text="book the car already" @click="isModalOpen = true"/>
+      <div class="w-1/2 grid grid-cols-3">
+
       </div>
+      
 
     </div>
 
@@ -63,7 +70,7 @@ const galleryData = computed(() => {
         width="600px"
         @close="isModalOpen = false"
       >
-      <CarModal/>
+      <CarModal :car-id="car?.id"/>
     </CustomModal>
     </Transition>
 

@@ -89,39 +89,38 @@ watch(() => route.fullPath, () => {
         </div>
 
         <!-- Language Switcher for Desktop -->
-        <USelectMenu
+        <USelect
           v-model="selectedLanguage"
-          :options="languageOptions"
+          :items="languageOptions"
           value-attribute="value"
           option-attribute="label"
           class="w-32"
         >
-          <template #label>
+          <!-- <template #label>
             <span class="flex items-center gap-2">
               <UIcon :name="selectedLanguage?.icon || 'i-heroicons-language'" class="w-4 h-4" />
               {{ selectedLanguage?.label }}
             </span>
-          </template>
-        </USelectMenu>
+          </template> -->
+        </USelect>
     </div>
 
     <div class="flex md:hidden items-center gap-3">
       <!-- Language Switcher for Mobile -->
-      <USelectMenu
+      <USelect
         v-model="selectedLanguage"
-        :options="languageOptions"
+        :items="languageOptions"
         value-attribute="value"
         option-attribute="label"
-        class="w-28"
         size="sm"
       >
-        <template #label>
+        <!-- <template #label>
           <span class="flex items-center gap-1.5">
             <UIcon :name="selectedLanguage?.icon || 'i-heroicons-language'" class="w-3.5 h-3.5" />
             <span class="text-sm">{{ selectedLanguage?.label }}</span>
           </span>
-        </template>
-      </USelectMenu>
+        </template> -->
+      </USelect>
 
       <!-- Burger Menu -->
       <div

@@ -76,7 +76,7 @@ const isModalOpen = ref(false)
         <div class="flex w-full flex-col gap-2">
           <CustomButton class="w-full" text="Book the car already" @click="isModalOpen = true" />
           <NuxtLink class="w-full" :to="getSingleUrl('cars', data)">
-            <CustomButton class="w-full" text="view details" :type="2" />
+            <CustomButton class="w-full" text="view details" :type="3" />
           </NuxtLink>
         </div>
       </div>
@@ -92,7 +92,7 @@ const isModalOpen = ref(false)
         width="600px"
         @close="isModalOpen = false"
       >
-      <CarModal/>
+      <CarModal :car-id="data?.id"/>
     </CustomModal>
     </Transition>
 

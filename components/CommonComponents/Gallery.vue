@@ -51,12 +51,32 @@ onMounted(() => {
             <swiper-container
               class="gallery-swiper"
               :key="swiperKey"
-              :slides-per-view="3"
+              :slides-per-view="2"
               :space-between="24"
               :loop="true"
               :navigation="{
                 nextEl: '.gallery-slider-next',
                 prevEl: '.gallery-slider-prev',
+                }"
+                :breakpoints="{
+                  0: {
+                    slidesPerView: 1,
+                  },
+                  480: {
+                    slidesPerView: 2,
+                  },
+                  768: {
+                    slidesPerView: 2,
+                  },
+                  1024: {
+                    slidesPerView: 2,
+                  },
+                  1280: {
+                    slidesPerView: 3,
+                  },
+                  1920: {
+                    slidesPerView: 3,
+                  }
                 }"
             >
               <swiper-slide

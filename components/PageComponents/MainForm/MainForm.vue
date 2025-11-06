@@ -13,7 +13,7 @@
       </div>
 
       <!-- Divider - Hidden on mobile -->
-      <div class="hidden lg:block w-[1px] h-[50px] bg-gray-light mx-4"></div>
+      <div class="hidden lg:block w-[1px] h-[50px] bg-gray-dark mx-4"></div>
 
       <!-- Phone Input -->
       <div class="flex-1 min-w-0">
@@ -25,7 +25,7 @@
       </div>
 
       <!-- Divider - Hidden on mobile -->
-      <div class="hidden lg:block w-[1px] h-[50px] bg-gray-light mx-4"></div>
+      <div class="hidden lg:block w-[1px] h-[50px] bg-gray-dark mx-4"></div>
 
       <!-- Email Input -->
       <div class="flex-1 min-w-0">
@@ -37,7 +37,7 @@
       </div>
 
       <!-- Divider - Hidden on mobile -->
-      <div class="hidden lg:block w-[1px] h-[50px] bg-gray-light mx-4"></div>
+      <div class="hidden lg:block w-[1px] h-[50px] bg-gray-dark mx-4"></div>
 
       <!-- Date Range Picker -->
       <div class="flex-1 min-w-0">
@@ -65,7 +65,7 @@
       </div>
 
       <!-- Divider - Hidden on mobile -->
-      <div class="hidden lg:block w-[1px] h-[50px] bg-gray-light mx-4"></div>
+      <div class="hidden lg:block w-[1px] h-[50px] bg-gray-dark mx-4"></div>
 
       <!-- Time Selectors Row -->
       <div class="flex gap-2 flex-1 min-w-0">
@@ -139,7 +139,7 @@
       </div>
 
       <!-- Divider - Hidden on mobile -->
-      <div class="hidden lg:block w-[1px] h-[50px] bg-gray-light mx-4"></div>
+      <div class="hidden lg:block w-[1px] h-[50px] bg-gray-dark mx-4"></div>
 
       <!-- Car Selection -->
       <div class="flex items-center justify-center lg:w-[400px]">
