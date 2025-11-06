@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { apiFetch } from "~/composables/helpers";
+import MainForm from "../MainForm/MainForm.vue";
 const { $strapiMedia } = useNuxtApp();
 
 const { data, execute, error } = await apiFetch(
@@ -42,10 +43,13 @@ onMounted(async () => {
         <SwiperSlide v-for="item in bannersData" :key="item?.id">
             {{ bannersData }} -->
     <div class="relative">
+      <div class="absolute top-10 w-full flex justify-center items-center">
+        <MainForm/>
+      </div>
       <div class="max-h-[calc(100dvh-104px)] group w-full overflow-hidden">
         <NuxtImg
           class="h-full w-full object-cover aspect-[375/296] sm:aspect-[1920/1000]"
-          :src="bannerMedia(bannersData?.image?.formats?.large?.url)"
+          :src="bannerMedia(bannersData?.image?.formats?.large?.url || bannersData?.image?.formats?.thumbnail?.url)"
         />
       </div>
       <div

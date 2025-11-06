@@ -12,7 +12,9 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     'nuxt-swiper',
     '@nuxtjs/i18n',
+    "shadcn-nuxt",
   ],
+  ssr: true,
   runtimeConfig: {
     public: {
       NUXT_PUBLIC_BASE_URL: process.env.NUXT_PUBLIC_BASE_URL,
@@ -35,5 +37,16 @@ export default defineNuxtConfig({
       { code: "ka", name: "Ka", iso: "ka-KA" },
       { code: "en", name: "En", iso: "en-EN" },
     ]
+  },
+  shadcn: {
+    /**
+     * Prefix for all the imported component
+     */
+    prefix: '',
+    /**
+     * Directory that the component lives in.
+     * @default "./components/ui"
+     */
+    componentDir: './components/ui'
   },
 })

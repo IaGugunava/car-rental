@@ -2,7 +2,7 @@
 
 const { locale } = useI18n()
 
-const { data, execute, error } = await apiFetch(`/api/features?locale=${locale.value}`);
+const { data, execute, error } = await apiFetch(`/features?locale=${locale.value}`);
 
 const featuresData = computed(() => (!error.value ? data?.value?.data : null));
 

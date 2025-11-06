@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "@nuxt/ui";
 
 @tailwind utilities;
 
@@ -17,6 +18,10 @@
     --color-gray-dark: var(--gray-dark);
     --color-gray-light: var(--gray-light);
     --color-white: var(--white);
+
+    --ui-bg: var(--white);
+    --ui-text: var(--gray-dark);
+    --ui-text-muted: var(--gray-dark);
 
 
     --color-background: var(--background);
@@ -97,13 +102,14 @@
     --breakpoint-xl: 1536px;
     --breakpoint-2xl: 1920px;
 
-    --dark: #050105;
-    --primary: #6A0572;
+    --dark: #181818;
+    --primary: #ED5507;
     --primary-light: '#861A88';
     --primary-dark: #5A0460;
     --primary-subtle: #6623751a;
-    --gray-dark: #312f33;
-    --gray-light: #9c999e;
+    --secondary-blue: #078FED;
+    --gray-dark: #B3B3B3;
+    --gray-light: #F5F5F5;
     --white: #fff;
 
     --background: oklch(1 0 0);

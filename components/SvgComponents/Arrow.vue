@@ -1,0 +1,3 @@
+<template>
+    <svg width="13" height="22" viewBox="0 0 13 22" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_2_2)"><path d="M10.953 10.9531L1.061 1.06112" stroke="#444958" stroke-width="1.5" stroke-linecap="round"></path><path d="M10.953 10.9537L1.061 20.8457" stroke="#444958" stroke-width="1.5" stroke-linecap="round"></path></g><defs><clipPath id="clip0_2_2"><rect width="12.013" height="21.906" fill="white"></rect></clipPath></defs></svg>
+</template>

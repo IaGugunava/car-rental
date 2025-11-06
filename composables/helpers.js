@@ -22,6 +22,19 @@ export const apiFetch = (path, options = {}) => {
   });
 };
 
+export const apiFetchForm = (path, options = {}) => {
+  const { apiUrl } = useConfigs();
+
+  return useFetch(path, {
+    method: "POST",
+    baseURL: apiUrl,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    ...options,
+  });
+}
+
 export const getSingleUrl = (path, item) => {
   const id = item?.id;
   const slug = item?.slug.toLowerCase().split(" ").join("-");

@@ -3,6 +3,8 @@ import FuelSvg from '~/components/SvgComponents/FuelSvg.vue';
 import GearSvg from '~/components/SvgComponents/GearSvg.vue';
 import SeatSvg from '~/components/SvgComponents/SeatSvg.vue';
 import CustomButton from '~/components/UIComponents/CustomButton.vue';
+import CustomModal from '~/components/UIComponents/CustomModal.vue';
+import CarModal from '~/components/CommonComponents/CarModal.vue';
 
 const props = defineProps<{
   data: any;
@@ -15,11 +17,13 @@ const carsMedia = (url: string) => {
   // @ts-expect-error
   return $strapiMedia(url);
 };
+
+const isModalOpen = ref(false)
 </script>
 
 <template>
   <div>
-    <div class="p-6 bg-gray-light rounded-xl">
+    <div class="p-6 bg-gray-light rounded-xl h-full">
       <div class="w-full">
         <NuxtImg
           class="aspect-[480/240] rounded-lg h-full w-full object-cover"
@@ -69,12 +73,30 @@ const carsMedia = (url: string) => {
           </div>
         </div>
 
-        <div>
-            <CustomButton text="view details"/>
+        <div class="flex w-full flex-col gap-2">
+          <CustomButton class="w-full" text="Book the car already" @click="isModalOpen = true" />
+          <NuxtLink class="w-full" :to="getSingleUrl('cars', data)">
+            <CustomButton class="w-full" text="view details" :type="2" />
+          </NuxtLink>
         </div>
       </div>
 
     </div>
+
+    <Teleport to="body">
+    <Transition name="fade">
+      <!-- Modal content would go here -->
+       <CustomModal
+        v-if="isModalOpen"
+        title="Book Car"
+        width="600px"
+        @close="isModalOpen = false"
+      >
+      <CarModal/>
+    </CustomModal>
+    </Transition>
+
+  </Teleport>
   </div>
 </template>
 

@@ -30,14 +30,12 @@ watch(
     immediate: true,
   }
 );
-
-console.log(carsData.value, "cars");
 </script>
 
 <template>
   <div class="py-[60px]">
      <div class="grid-container flex w-full justify-between items-center mb-10">
-            <h2 class="text-[50px] font-bold text-dark">Choose the car that suits you</h2>
+            <h2 class="text-xl sm:text-[50px] font-bold text-dark">Choose the car that suits you</h2>
 
             <NuxtLink to="/cars">
               <CustomButton text="view more"/>
@@ -48,8 +46,33 @@ console.log(carsData.value, "cars");
       style=""
       :space-between="30"
       :slides-per-view="4"
-      :slides-offset-before="242"
+      :slides-offset-before="40"
       :speed="1000"
+      :breakpoints="{
+          0: {
+            slidesPerView: 1,
+          },
+          480: {
+            slidesPerView: 1,
+          },
+          768: {
+            slidesPerView: 2,
+          },
+          1024: {
+            slidesOffsetBefore: 40,
+            slidesPerView: 2,
+          },
+          1280: {
+            slidesOffsetBefore: 80,
+            slidesPerView: 3,
+            spaceBetween: 20
+          },
+          1920: {
+            slidesPerView: 4,
+            slidesOffsetBefore: 160,
+            spaceBetween: 30
+          }
+        }"
     >
       <swiper-slide
         v-for="item in carsData"
