@@ -13,13 +13,23 @@ export default defineNuxtConfig({
     'nuxt-swiper',
     '@nuxtjs/i18n',
     "shadcn-nuxt",
+    '@nuxt/fonts',
   ],
+  colorMode: {
+    classSuffix: '',
+    preference: 'light',
+    fallback: 'light'
+  },
   ssr: true,
   runtimeConfig: {
     public: {
       NUXT_PUBLIC_BASE_URL: process.env.NUXT_PUBLIC_BASE_URL,
       NUXT_PUBLIC_SITE_URL: process.env.NUXT_PUBLIC_SITE_URL,
-      NUXT_PUBLIC_STRAPI_TOKEN: process.env.NUXT_PUBLIC_STRAPI_TOKEN
+      NUXT_PUBLIC_STRAPI_TOKEN: process.env.NUXT_PUBLIC_STRAPI_TOKEN,
+      emailjsServiceId: process.env.NUXT_PUBLIC_EMAILJS_SERVICE_ID,
+      emailjsPublicKey: process.env.NUXT_PUBLIC_EMAILJS_PUBLIC_KEY,
+      emailjsContactTemplateId: process.env.NUXT_PUBLIC_EMAILJS_CONTACT_TEMPLATE_ID,
+      emailjsBookingTemplateId: process.env.NUXT_PUBLIC_EMAILJS_BOOKING_TEMPLATE_ID
     }
   },
 
@@ -34,9 +44,10 @@ export default defineNuxtConfig({
     strategy: "prefix",
     defaultLocale: "en",
     locales: [
-      { code: "ka", name: "Ka", iso: "ka-KA" },
-      { code: "en", name: "En", iso: "en-EN" },
-    ]
+      { code: "ka", name: "Ka", iso: "ka-KA", file: 'ka.json' },
+      { code: "en", name: "En", iso: "en-EN", file: 'en.json' },
+    ],
+    langDir: 'locales/'
   },
   shadcn: {
     /**
@@ -48,5 +59,10 @@ export default defineNuxtConfig({
      * @default "./components/ui"
      */
     componentDir: './components/ui'
+  },
+  fonts: {
+    families: [
+      { name: 'Noto Sans Georgian', provider: 'google' }
+    ]
   },
 })

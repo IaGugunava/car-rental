@@ -1,12 +1,16 @@
 <script setup lang="ts">
-// import GlobalProvider from '~/components/GlobalProvider.vue'
+const { checkFirstLoad } = useFirstLoad()
+
+onMounted(() => {
+  checkFirstLoad()
+})
 </script>
 
 <template>
   <UApp>
+    <LoaderDark />
     <NuxtLayout name="default">
       <NuxtPage />
     </NuxtLayout>
-    <!-- <GlobalProvider/> -->
   </UApp>
 </template>

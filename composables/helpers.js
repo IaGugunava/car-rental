@@ -36,9 +36,8 @@ export const apiFetchForm = (path, options = {}) => {
 }
 
 export const getSingleUrl = (path, item) => {
-  const id = item?.id;
-  const slug = item?.slug.toLowerCase().split(" ").join("-");
-  return `/${path}/${id}-${slug}`;
+  const id = item?.documentId || item?.id;
+  return `/${path}/${id}`;
 };
 
 // export const formatDate = (date, formatValue) => {

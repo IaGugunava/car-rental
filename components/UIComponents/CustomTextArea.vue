@@ -8,7 +8,6 @@ const props = withDefaults(
     modelValue?: any;
     placeholder?: string | null;
     error?: string | null | Ref<string>;
-    textColor?: "black" | "white";
   }>(),
   {
     modelValue: "",
@@ -45,8 +44,7 @@ const inputModel = computed({
     <div class="textarea-box custom-scroll relative bg-transparent overflow-hidden border border-primary rounded-lg pb-6 pr-2 transition-colors ease-in-out">
       <textarea
         v-model="inputModel"
-        class="leading-13 h-24 w-full resize-none border-none pl-4 pr-8 outline-none placeholder:text-[#626f86] focus:outline-none"
-        :style="{'color': textColor}"
+        class="leading-13 h-24 w-full resize-none border-none pl-4 pr-8 outline-none text-dark placeholder:text-[#626f86] focus:outline-none"
         :placeholder="placeholder || ''"
       />
     </div>

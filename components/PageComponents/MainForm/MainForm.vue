@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full max-w-[1680px] mx-auto px-4">
+  <div class="w-full relative z-10 max-w-[1680px] mx-auto px-4">
     <div
       class="flex flex-col lg:flex-row bg-white rounded-3xl lg:rounded-full shadow-lg p-4 lg:p-6 gap-4 lg:gap-0 relative"
     >
@@ -8,7 +8,7 @@
         <CustomInput
           v-model="formData.name"
           :has-border="false"
-          placeholder="name"
+          :placeholder="$t('mainForm.placeholders.name')"
         />
       </div>
 
@@ -20,7 +20,7 @@
         <CustomInput
           v-model="formData.phone"
           :has-border="false"
-          placeholder="phone"
+          :placeholder="$t('mainForm.placeholders.phone')"
         />
       </div>
 
@@ -32,7 +32,7 @@
         <CustomInput
           v-model="formData.email"
           :has-border="false"
-          placeholder="email"
+          :placeholder="$t('mainForm.placeholders.email')"
         />
       </div>
 
@@ -52,7 +52,7 @@
             {{
               formData.date?.start && formData.date?.end
                 ? `${formatDate(formData.date.start)} - ${formatDate(formData.date.end)}`
-                : "Select dates"
+                : $t('mainForm.placeholders.selectDates')
             }}
           </div>
 
@@ -68,73 +68,32 @@
       <div class="hidden lg:block w-[1px] h-[50px] bg-gray-dark mx-4"></div>
 
       <!-- Time Selectors Row -->
-      <div class="flex gap-2 flex-1 min-w-0">
+      <div class="flex flex-col lg:flex-row gap-2 flex-1 min-w-0 lg:min-w-[200px]">
         <!-- Start Time -->
-        <div class="flex-1">
-          <UPopover>
-            <div
-              class="h-full flex flex-col justify-center items-start lg:items-center text-base cursor-pointer px-3 py-2 lg:p-0"
-              :class="{
-                'text-dark': formData.time.start,
-                'text-[#626f86]': !formData.time.start,
-              }"
-            >
-              {{ formData.time.start || "Start time" }}
-            </div>
+        <div class="flex-1 min-w-0">
+          <CustomInput
+            v-model="formData.time.start"
+            type="time"
+            :has-border="false"
+            :placeholder="$t('mainForm.placeholders.startTime')"
+            class="w-full"
+          />
+        </div>
 
-            <template #content>
-              <div class="p-4 w-64">
-                <div class="flex gap-2">
-                  <USelect
-                    v-model="startHour"
-                    :items="hours"
-                    placeholder="Hour"
-                    class="flex-1"
-                  />
-                  <USelect
-                    v-model="startMinute"
-                    :items="minutes"
-                    placeholder="Min"
-                    class="flex-1"
-                  />
-                </div>
-              </div>
-            </template>
-          </UPopover>
+        <!-- Time Separator - Hidden on mobile -->
+        <div class="hidden lg:flex items-center justify-center px-1">
+          <span class="text-gray-400">-</span>
         </div>
 
         <!-- End Time -->
-        <div class="flex-1">
-          <UPopover>
-            <div
-              class="h-full flex flex-col justify-center items-start lg:items-center text-base cursor-pointer px-3 py-2 lg:p-0"
-              :class="{
-                'text-dark': formData.time.end,
-                'text-[#626f86]': !formData.time.end,
-              }"
-            >
-              {{ formData.time.end || "End time" }}
-            </div>
-
-            <template #content>
-              <div class="p-4 w-64">
-                <div class="flex gap-2">
-                  <USelect
-                    v-model="endHour"
-                    :items="hours"
-                    placeholder="Hour"
-                    class="flex-1"
-                  />
-                  <USelect
-                    v-model="endMinute"
-                    :items="minutes"
-                    placeholder="Min"
-                    class="flex-1"
-                  />
-                </div>
-              </div>
-            </template>
-          </UPopover>
+        <div class="flex-1 min-w-0">
+          <CustomInput
+            v-model="formData.time.end"
+            type="time"
+            :has-border="false"
+            :placeholder="$t('mainForm.placeholders.endTime')"
+            class="w-full"
+          />
         </div>
       </div>
 
@@ -146,7 +105,7 @@
         <USelect
           v-model="formData.carId"
           :items="cars"
-          placeholder="Select car"
+          :placeholder="$t('mainForm.placeholders.selectCar')"
           class="w-full text-base bg-transparent border-none ring-0 text-dark"
         />
       </div>
@@ -156,7 +115,7 @@
         class="flex h-[50px] justify-center items-center cursor-pointer hover:opacity-80 transition-opacity lg:ml-4"
         @click="handleSubmit"
       >
-        <SearchSvg class="w-6 h-6 [&_svg]:w-6 [&_svg]:h-6" />
+        <SearchSvg class="w-6 h-6 [&_svg]:w-6 [&_svg]:h-6 [&_path]:stroke-primary" />
       </div>
     </div>
   </div>
@@ -207,72 +166,51 @@ const formData = reactive<FormData>({
   carId: null,
 });
 
-const startHour = ref('')
-const startMinute = ref('')
-const endHour = ref('')
-const endMinute = ref('')
-
-// Generate hours (00-23)
-const hours = computed(() => {
-  return Array.from({ length: 24 }, (_, i) => {
-    const hour = i.toString().padStart(2, '0')
-    return { label: hour, value: hour }
-  })
-})
-
-// Generate minutes (00, 15, 30, 45)
-const minutes = computed(() => {
-  return ['00', '15', '30', '45'].map(min => ({
-    label: min,
-    value: min
-  }))
-})
-
-// Watch for time changes and update formData
-watch([startHour, startMinute], ([hour, minute]) => {
-  if (hour && minute) {
-    formData.time.start = `${hour}:${minute}`
+// Watch for time input changes and validate format
+watch(() => formData.time.start, (value) => {
+  if (value && value.length === 5) {
+    const [hours, minutes] = value.split(':');
+    const h = parseInt(hours);
+    const m = parseInt(minutes);
+    if (isNaN(h) || isNaN(m) || h < 0 || h > 23 || m < 0 || m > 59) {
+      formData.time.start = '';
+    }
   }
-})
+});
 
-watch([endHour, endMinute], ([hour, minute]) => {
-  if (hour && minute) {
-    formData.time.end = `${hour}:${minute}`
+watch(() => formData.time.end, (value) => {
+  if (value && value.length === 5) {
+    const [hours, minutes] = value.split(':');
+    const h = parseInt(hours);
+    const m = parseInt(minutes);
+    if (isNaN(h) || isNaN(m) || h < 0 || h > 23 || m < 0 || m > 59) {
+      formData.time.end = '';
+    }
   }
-})
+});
 
 const formatDate = (date) => {
   if (!date) return ''
   const d = new Date(date)
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  return d.toLocaleDateString(locale.value, { month: 'short', day: 'numeric' })
 }
+
+const { t } = useI18n();
 
 // Validation rules
 const rules = {
   name: {
-    required: helpers.withMessage("Name is required", required),
+    required: helpers.withMessage(() => t('mainForm.validation.nameRequired'), required),
   },
   phone: {
-    required: helpers.withMessage("Phone number is required", required),
+    required: helpers.withMessage(() => t('mainForm.validation.phoneRequired'), required),
   },
   email: {
-    required: helpers.withMessage("Email is required", required),
-    email: helpers.withMessage("Please enter a valid email", email),
-  },
-  pickUpDate: {
-    required: helpers.withMessage("Pick up date is required", required),
-  },
-  pickUpTime: {
-    required: helpers.withMessage("Pick up time is required", required),
-  },
-  dropOffDate: {
-    required: helpers.withMessage("Drop off date is required", required),
-  },
-  dropOffTime: {
-    required: helpers.withMessage("Drop off time is required", required),
+    required: helpers.withMessage(() => t('mainForm.validation.emailRequired'), required),
+    email: helpers.withMessage(() => t('mainForm.validation.emailInvalid'), email),
   },
   carId: {
-    required: helpers.withMessage("Please select a car", required),
+    required: helpers.withMessage(() => t('mainForm.validation.carRequired'), required),
   },
 };
 
@@ -301,8 +239,8 @@ const fetchCars = async () => {
       : null;
   } catch (error) {
     toast.add({
-      title: "Error",
-      description: "Failed to load cars",
+      title: t('mainForm.toast.error'),
+      description: t('mainForm.toast.failedToLoadCars'),
     });
     console.error("Error fetching cars:", error);
   } finally {
@@ -310,14 +248,40 @@ const fetchCars = async () => {
   }
 };
 
+// Format date and time for Strapi datetime field (ISO 8601)
+const formatDateTime = (date: CalendarDate | string, time: string) => {
+  if (!date || !time) return null;
+  
+  // Convert CalendarDate to JS Date
+  let dateObj: Date;
+  if (typeof date === 'string') {
+    dateObj = new Date(date);
+  } else {
+    // CalendarDate has year, month, day properties
+    dateObj = new Date(date.year, date.month - 1, date.day);
+  }
+  
+  // Parse the time (HH:MM)
+  const [hours, minutes] = time.split(':');
+  
+  // Set the time on the date object
+  dateObj.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+  
+  // Return ISO 8601 format (e.g., "2024-11-06T14:30:00.000Z")
+  return dateObj.toISOString();
+};
+
+const config = useRuntimeConfig();
+const { sendEmail } = useEmailJS();
+
 // Handle form submission
 const handleSubmit = async () => {
   // const isValid = await v$.value.$validate();
 
   // if (!isValid) {
   //   toast.add({
-  //     title: "Validation Error",
-  //     description: "Please fill in all required fields correctly",
+  //     title: t('mainForm.toast.validationError'),
+  //     description: t('mainForm.toast.fillAllFields'),
   //   });
   //   return;
   // }
@@ -325,14 +289,18 @@ const handleSubmit = async () => {
   submitting.value = true;
 
   try {
+    // Format start and end datetime for Strapi
+    const startDateTime = formatDateTime(formData.date?.start, formData.time.start);
+    const endDateTime = formatDateTime(formData.date?.end, formData.time.end);
+
     // Prepare data for Strapi
     const bookingData = {
       data: {
         name: formData.name,
         phone: formData.phone,
         email: formData.email,
-        start: formData.date?.start,
-        finish: formData.date?.end,
+        start: startDateTime,
+        finish: endDateTime,
         car: formData.carId,
       },
     };
@@ -342,16 +310,38 @@ const handleSubmit = async () => {
       body: JSON.stringify(bookingData),
     });
 
+    // Get selected car name for email
+    const selectedCar = cars.value.find(car => car.value === formData.carId);
+    const carName = selectedCar ? selectedCar.label : formData.carId || 'N/A';
+
+    // Format dates for email
+    const startFormatted = `${formatDate(formData.date?.start)} ${formData.time.start}`;
+    const finishFormatted = `${formatDate(formData.date?.end)} ${formData.time.end}`;
+
+    // Send email notification via EmailJS
+    const templateId = config.public.emailjsBookingTemplateId as string;
+    if (templateId) {
+      await sendEmail(templateId, {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        car: carName || formData.carId,
+        start: startFormatted,
+        finish: finishFormatted,
+        message: '', // No message field in main form
+      });
+    }
+
     toast.add({
-      title: "Success",
-      description: "Booking created successfully!",
+      title: t('mainForm.toast.success'),
+      description: t('mainForm.toast.bookingCreated'),
     });
 
     resetForm();
   } catch (error) {
     toast.add({
-      title: "Error",
-      description: "Failed to create booking",
+      title: t('mainForm.toast.error'),
+      description: t('mainForm.toast.bookingFailed'),
     });
     console.error("Error submitting form:", error);
   } finally {
@@ -365,10 +355,14 @@ const resetForm = () => {
     name: "",
     phone: "",
     email: "",
-    pickUpDate: null,
-    pickUpTime: "",
-    dropOffDate: null,
-    dropOffTime: "",
+    date: {
+      start: "",
+      end: ""
+    },
+    time: {
+      start: "",
+      end: ""
+    },
     carId: null,
   });
   v$.value.$reset();

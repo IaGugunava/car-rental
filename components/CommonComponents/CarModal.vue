@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { useVuelidate } from '@vuelidate/core';
+import { required, email, helpers } from '@vuelidate/validators';
 import CustomButton from '~/components/UIComponents/CustomButton.vue';
 import CustomInput from '~/components/UIComponents/CustomInput.vue';
 import CustomTextArea from '../UIComponents/CustomTextArea.vue';
 
-const { locale } = useI18n()
+const { locale, t } = useI18n()
 
 const props = defineProps<{
   carId: number;
@@ -18,54 +20,106 @@ const contactFormData = reactive({
     start: "",
     end: ""
   },
-  startTime: "",
-  endTime: ""
+  startHour: "",
+  startMinute: "",
+  endHour: "",
+  endMinute: ""
 });
 
-// Time selector values
-const startHour = ref("");
-const startMinute = ref("");
-const endHour = ref("");
-const endMinute = ref("");
-
-// Generate hours (00-23)
-const hours = computed(() => {
-  return Array.from({ length: 24 }, (_, i) => {
-    const hour = i.toString().padStart(2, '0');
-    return { label: hour, value: hour };
-  });
-});
-
-// Generate minutes (00, 15, 30, 45)
-const minutes = computed(() => {
-  return ['00', '15', '30', '45'].map(min => ({
-    label: min,
-    value: min
-  }));
-});
-
-// Watch for time changes and update contactFormData
-watch([startHour, startMinute], ([hour, minute]) => {
-  if (hour && minute) {
-    contactFormData.startTime = `${hour}:${minute}`;
+// Custom validators for time format
+const isValidHour = helpers.withMessage(
+  () => t('carModal.validation.invalidHour'),
+  (value: string) => {
+    if (!value) return true;
+    const hour = parseInt(value);
+    return !isNaN(hour) && hour >= 0 && hour <= 23;
   }
+);
+
+const isValidMinute = helpers.withMessage(
+  () => t('carModal.validation.invalidMinute'),
+  (value: string) => {
+    if (!value) return true;
+    const minute = parseInt(value);
+    return !isNaN(minute) && minute >= 0 && minute <= 59;
+  }
+);
+
+// Custom validator for date range
+const hasDateRange = helpers.withMessage(
+  () => t('carModal.validation.dateRequired'),
+  (value: any) => {
+    return value && value.start && value.end;
+  }
+);
+
+// Validation rules
+const rules = {
+  name: { 
+    required: helpers.withMessage(() => t('carModal.validation.nameRequired'), required) 
+  },
+  email: { 
+    required: helpers.withMessage(() => t('carModal.validation.emailRequired'), required),
+    email: helpers.withMessage(() => t('carModal.validation.emailInvalid'), email)
+  },
+  phone: { 
+    required: helpers.withMessage(() => t('carModal.validation.phoneRequired'), required) 
+  },
+  date: {
+    hasDateRange
+  },
+  startHour: { 
+    required: helpers.withMessage(() => t('carModal.validation.startHourRequired'), required),
+    isValidHour
+  },
+  startMinute: { 
+    required: helpers.withMessage(() => t('carModal.validation.startMinuteRequired'), required),
+    isValidMinute
+  },
+  endHour: { 
+    required: helpers.withMessage(() => t('carModal.validation.endHourRequired'), required),
+    isValidHour
+  },
+  endMinute: { 
+    required: helpers.withMessage(() => t('carModal.validation.endMinuteRequired'), required),
+    isValidMinute
+  }
+};
+
+const v$ = useVuelidate(rules, contactFormData);
+
+// Computed properties for formatted times
+const startTime = computed(() => {
+  if (contactFormData.startHour && contactFormData.startMinute) {
+    return `${contactFormData.startHour.padStart(2, '0')}:${contactFormData.startMinute.padStart(2, '0')}`;
+  }
+  return '';
 });
 
-watch([endHour, endMinute], ([hour, minute]) => {
-  if (hour && minute) {
-    contactFormData.endTime = `${hour}:${minute}`;
+const endTime = computed(() => {
+  if (contactFormData.endHour && contactFormData.endMinute) {
+    return `${contactFormData.endHour.padStart(2, '0')}:${contactFormData.endMinute.padStart(2, '0')}`;
   }
+  return '';
 });
 
 const success = ref(false);
 const error = ref("");
 
 // Format date and time for Strapi datetime field (ISO 8601)
-const formatDateTime = (date: string | Date, time: string) => {
+const formatDateTime = (date: any, time: string) => {
   if (!date || !time) return null;
   
-  // Create a date object from the date
-  const dateObj = new Date(date);
+  // Convert CalendarDate to JS Date
+  let dateObj: Date;
+  if (typeof date === 'string') {
+    dateObj = new Date(date);
+  } else if (date instanceof Date) {
+    dateObj = date;
+  } else {
+    // CalendarDate has year, month, day properties
+    dateObj = new Date(date.year, date.month - 1, date.day);
+  }
   
   // Parse the time (HH:MM)
   const [hours, minutes] = time.split(':');
@@ -82,18 +136,26 @@ const submitForm = async () => {
   error.value = "";
   success.value = false;
 
-  // Format start and end datetime for Strapi
-  const startDateTime = formatDateTime(contactFormData.date.start, contactFormData.startTime);
-  const endDateTime = formatDateTime(contactFormData.date.end, contactFormData.endTime);
-
-  // Validation
-  if (!startDateTime || !endDateTime) {
-    error.value = "Please select both dates and times.";
+  // Validate form
+  const isFormValid = await v$.value.$validate();
+  
+  if (!isFormValid) {
+    error.value = t('carModal.validation.fillAllFields');
     return;
   }
 
+  // Format start and end datetime for Strapi
+  const startDateTime = formatDateTime(contactFormData.date.start, startTime.value);
+  const endDateTime = formatDateTime(contactFormData.date.end, endTime.value);
+
+  // Validation
+  // if (!startDateTime || !endDateTime) {
+  //   error.value = t('carModal.validationError');
+  //   return;
+  // }
+
   try {
-    const res = await apiFetchForm("/api/bookings", {
+    const res = await apiFetchForm("/api/bookings?populate=car", {
       body: {
         data: {
           name: contactFormData.name,
@@ -108,9 +170,57 @@ const submitForm = async () => {
     });
 
     console.log("Response:", res);
+
+    // Send email notification via EmailJS
+    const config = useRuntimeConfig();
+    const { sendEmail } = useEmailJS();
+    const templateId = config.public.emailjsBookingTemplateId as string;
+    
+    if (templateId) {
+      // Get car name from response, fallback to car ID
+      const carName = res?.data?.car?.name || props.carId || 'N/A';
+      
+      // Format dates for email
+      const formatDateForEmail = (dateStr: string) => {
+        const d = new Date(dateStr);
+        return d.toLocaleDateString(locale.value, { month: 'short', day: 'numeric', year: 'numeric' });
+      };
+      
+      const formatTimeForEmail = (dateStr: string) => {
+        const d = new Date(dateStr);
+        return d.toLocaleTimeString(locale.value, { hour: '2-digit', minute: '2-digit' });
+      };
+      
+      const startFormatted = `${formatDateForEmail(startDateTime)} ${formatTimeForEmail(startDateTime)}`;
+      const finishFormatted = `${formatDateForEmail(endDateTime)} ${formatTimeForEmail(endDateTime)}`;
+      
+      await sendEmail(templateId, {
+        name: contactFormData.name,
+        email: contactFormData.email,
+        phone: contactFormData.phone,
+        car: carName || props.carId,
+        start: startFormatted,
+        finish: finishFormatted,
+        message: contactFormData.message || '',
+      });
+    }
+
     success.value = true;
+    
+    // Reset form
+    contactFormData.name = "";
+    contactFormData.email = "";
+    contactFormData.phone = "";
+    contactFormData.message = "";
+    contactFormData.date = { start: "", end: "" };
+    contactFormData.startHour = "";
+    contactFormData.startMinute = "";
+    contactFormData.endHour = "";
+    contactFormData.endMinute = "";
+    
+    v$.value.$reset();
   } catch (err: any) {
-    error.value = "Failed to send booking request.";
+    error.value = t('carModal.error');
   }
 };
 </script>
@@ -119,38 +229,48 @@ const submitForm = async () => {
   <div class="flex flex-col gap-4">
     <CustomInput
       v-model="contactFormData.name"
-      label="Name"
-      placeholder="Enter your name"
+      :label="$t('carModal.labels.name')"
+      :placeholder="$t('carModal.placeholders.name')"
+      :error="v$.name.$errors[0]?.$message"
+      @blur="v$.name.$touch()"
     />
     
     <CustomInput
       v-model="contactFormData.email"
-      label="Email"
-      placeholder="Enter your email"
+      type="email"
+      :label="$t('carModal.labels.email')"
+      :placeholder="$t('carModal.placeholders.email')"
+      :error="v$.email.$errors[0]?.$message"
+      @blur="v$.email.$touch()"
     />
     
     <CustomInput
       v-model="contactFormData.phone"
-      label="Phone"
-      placeholder="Enter your phone number"
+      :label="$t('carModal.labels.phone')"
+      :placeholder="$t('carModal.placeholders.phone')"
+      :error="v$.phone.$errors[0]?.$message"
+      @blur="v$.phone.$touch()"
     />
     
     <CustomTextArea
       v-model="contactFormData.message"
-      placeholder="Enter your message"
+      :placeholder="$t('carModal.placeholders.message')"
       textarea
     />
     
     <!-- Date Range Picker -->
     <div>
       <label class="block text-sm font-medium text-gray-700 mb-2">
-        Select Dates
+        {{ $t('carModal.labels.selectDates') }}
       </label>
       <UCalendar 
         v-model="contactFormData.date" 
         :locale="locale"
         range
       />
+      <div v-if="v$.date.$errors[0]" class="text-red-500 text-sm mt-1">
+        {{ v$.date.$errors[0].$message }}
+      </div>
     </div>
 
     <!-- Time Selectors -->
@@ -158,64 +278,72 @@ const submitForm = async () => {
       <!-- Start Time -->
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">
-          Start Time
+          {{ $t('carModal.labels.startTime') }}
         </label>
         <div class="flex gap-2">
-          <USelect
-            v-model="startHour"
-            :items="hours"
-            placeholder="Hour"
-            class="flex-1 z-[1003]"
-             :ui="{ wrapper: 'relative z-[1003]',
-    dropdown: 'z-[1003] absolute' }"
+          <CustomInput
+            v-model="contactFormData.startHour"
+            type="number"
+            min="0"
+            max="23"
+            :placeholder="$t('carModal.placeholders.hour')"
+            :error="v$.startHour.$errors[0]?.$message"
+            class="flex-1"
+            @blur="v$.startHour.$touch()"
           />
-          <USelect
-            v-model="startMinute"
-            :items="minutes"
-            placeholder="Min"
-            class="flex-1 z-[1003]"
-             :ui="{ wrapper: 'relative z-[1003]',
-    dropdown: 'z-[1003] absolute' }"
+          <CustomInput
+            v-model="contactFormData.startMinute"
+            type="number"
+            min="0"
+            max="59"
+            :placeholder="$t('carModal.placeholders.min')"
+            :error="v$.startMinute.$errors[0]?.$message"
+            class="flex-1"
+            @blur="v$.startMinute.$touch()"
           />
         </div>
-        <div v-if="contactFormData.startTime" class="mt-2 text-sm text-gray-600">
-          Selected: {{ contactFormData.startTime }}
+        <div v-if="startTime" class="mt-2 text-sm text-gray-600">
+          {{ $t('carModal.labels.selected') }}: {{ startTime }}
         </div>
       </div>
 
       <!-- End Time -->
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">
-          End Time
+          {{ $t('carModal.labels.endTime') }}
         </label>
         <div class="flex gap-2">
-          <USelect
-            v-model="endHour"
-            :items="hours"
-            placeholder="Hour"
-            class="flex-1 z-[1003]"
-             :ui="{ wrapper: 'relative z-[1003]',
-    dropdown: 'z-[1003] absolute' }"
+          <CustomInput
+            v-model="contactFormData.endHour"
+            type="number"
+            min="0"
+            max="23"
+            :placeholder="$t('carModal.placeholders.hour')"
+            :error="v$.endHour.$errors[0]?.$message"
+            class="flex-1"
+            @blur="v$.endHour.$touch()"
           />
-          <USelect
-            v-model="endMinute"
-            :items="minutes"
-            placeholder="Min"
-            class="flex-1 z-[1003]"
-             :ui="{ wrapper: 'relative z-[1003]',
-    dropdown: 'z-[1003] absolute' }"
+          <CustomInput
+            v-model="contactFormData.endMinute"
+            type="number"
+            min="0"
+            max="59"
+            :placeholder="$t('carModal.placeholders.min')"
+            :error="v$.endMinute.$errors[0]?.$message"
+            class="flex-1"
+            @blur="v$.endMinute.$touch()"
           />
         </div>
-        <div v-if="contactFormData.endTime" class="mt-2 text-sm text-gray-600">
-          Selected: {{ contactFormData.endTime }}
+        <div v-if="endTime" class="mt-2 text-sm text-gray-600">
+          {{ $t('carModal.labels.selected') }}: {{ endTime }}
         </div>
       </div>
     </div>
 
-    <CustomButton text="submit car" @click="submitForm" />
+    <CustomButton :text="$t('carModal.submit')" @click="submitForm" />
     
     <div v-if="success" class="text-green-500">
-      Your message has been sent successfully!
+      {{ $t('carModal.success') }}
     </div>
     <div v-if="error" class="text-red-500">
       {{ error }}

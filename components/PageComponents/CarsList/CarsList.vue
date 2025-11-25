@@ -3,13 +3,13 @@ import CarCard from '../CarSlider/parts/CarCard.vue';
 
 const { locale } = useI18n();
 
-const router = useRouter();
+// const router = useRouter();
 const route = useRoute();
 
 const pagination = ref({
   pageNumber: Number(route?.query?.page) || 1,
   maxPages: 5,
-  perPage: 9
+  perPage: 12
 });
 
 const { data, error } = await apiFetch(
@@ -18,11 +18,11 @@ const { data, error } = await apiFetch(
 
 const carsData = computed(() => (!error.value ? data?.value?.data : null));
 
-const filteredLength = ref(carsData?.value?.length);
+// const filteredLength = ref(carsData?.value?.length);
 
-const onClickHandler = (page: number) => {
-  router.push({ query: { ...route?.query, page } });
-};
+// const onClickHandler = (page: number) => {
+//   router.push({ query: { ...route?.query, page } });
+// };
 </script>
 
 <template>

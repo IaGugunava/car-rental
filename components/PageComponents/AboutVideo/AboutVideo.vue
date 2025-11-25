@@ -34,7 +34,7 @@ const videoId = computed(() => {
       allowfullscreen
     ></iframe>
   </div>
-  <p v-else class="text-red-500 text-center mt-2">Invalid YouTube URL</p>
+  <p v-else class="text-red-500 text-center mt-2">{{ $t('aboutVideo.invalidUrl') }}</p>
     </div>
 </template>
 

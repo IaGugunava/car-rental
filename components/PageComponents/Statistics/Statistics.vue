@@ -86,7 +86,6 @@ watch(
 );
 
 onBeforeMount(() => {
-  console.log("mounted run")
   window.addEventListener("scroll", () => {
     rectTop.value = statsRef.value?.getBoundingClientRect()?.top;
   });

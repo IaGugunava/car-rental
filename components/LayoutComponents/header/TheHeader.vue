@@ -1,9 +1,17 @@
 <script setup lang="ts">
+import LangSwitcher from './parts/LangSwitcher.vue';
 import TheBurger from './parts/TheBurger.vue';
+import logoHeaderLight from '~/assets/icons/logo-header-en.svg';
+import logoHeaderDark from '~/assets/icons/logo-header-dark.svg';
 
 const route = useRoute();
-const { locale, setLocale, locales, t } = useI18n();
+// const router = useRouter();
+const { locale, locales, t } = useI18n();
+// const switchLocalePath = useSwitchLocalePath();
+const { isDark } = useTheme();
 const isBurgerOpen = ref(false);
+
+const logoSrc = computed(() => isDark.value ? logoHeaderDark : logoHeaderLight);
 
 // Dynamic pages with translations
 const pages = computed(() => [
@@ -33,15 +41,16 @@ const languageOptions = computed(() => {
   }));
 });
 
-// Current selected language
-const selectedLanguage = computed({
-  get: () => languageOptions.value.find(lang => lang.value === locale.value),
-  set: (newLang: any) => {
-    if (newLang) {
-      setLocale(newLang.value);
-    }
-  }
-});
+// Current selected language - use simple string value
+// const selectedLanguage = ref(locale.value);
+
+// // Watch for language changes and navigate to the new locale path
+// watch(selectedLanguage, async (newLocale) => {
+//   if (newLocale && newLocale !== locale.value) {
+//     const newPath = switchLocalePath(newLocale);
+//     await router.push(newPath);
+//   }
+// });
 
 watch(
   () => isBurgerOpen.value,
@@ -57,6 +66,11 @@ watch(
 watch(() => route.fullPath, () => {
   isBurgerOpen.value = false;
 });
+
+// Update selectedLanguage when locale changes
+// watch(() => locale.value, (newLocale) => {
+//   selectedLanguage.value = newLocale;
+// });
 </script>
 
 <template>
@@ -65,13 +79,24 @@ watch(() => route.fullPath, () => {
       to="/"
       class="w-[150px] h-[50px] flex items-center justify-center"
     >
-      <img src="../../../assets/icons/logo.svg" />
+      <ClientOnly>
+        <img 
+          :src="logoSrc" 
+          :alt="`Logo ${locale}`" 
+        />
+        <template #fallback>
+          <img 
+            :src="logoHeaderLight" 
+            :alt="`Logo ${locale}`" 
+          />
+        </template>
+      </ClientOnly>
     </NuxtLink>
 
     <div class="hidden md:flex gap-5 flex-row">
         <div v-for="item in pages" :key="item?.id">
-            <NuxtLink :to="item?.slug">
-                <p class="text-dark text-xl font-semibold">{{ item?.title }}</p>
+            <NuxtLink :to="`/${item?.slug}`">
+                <p class="text-primary hover:text-dark transition-all upper duration-300 ease-in-out text-xl font-semibold">{{ item?.title }}</p>
             </NuxtLink>
         </div>
     </div>
@@ -88,39 +113,20 @@ watch(() => route.fullPath, () => {
             </div>
         </div>
 
+        <!-- Theme Toggle -->
+        <ThemeToggle/>
+
         <!-- Language Switcher for Desktop -->
-        <USelect
-          v-model="selectedLanguage"
-          :items="languageOptions"
-          value-attribute="value"
-          option-attribute="label"
-          class="w-32"
-        >
-          <!-- <template #label>
-            <span class="flex items-center gap-2">
-              <UIcon :name="selectedLanguage?.icon || 'i-heroicons-language'" class="w-4 h-4" />
-              {{ selectedLanguage?.label }}
-            </span>
-          </template> -->
-        </USelect>
+        <LangSwitcher/>
     </div>
 
+    
     <div class="flex md:hidden items-center gap-3">
+      <!-- Theme Toggle for Mobile -->
+      <ThemeToggle/>
+
       <!-- Language Switcher for Mobile -->
-      <USelect
-        v-model="selectedLanguage"
-        :items="languageOptions"
-        value-attribute="value"
-        option-attribute="label"
-        size="sm"
-      >
-        <!-- <template #label>
-          <span class="flex items-center gap-1.5">
-            <UIcon :name="selectedLanguage?.icon || 'i-heroicons-language'" class="w-3.5 h-3.5" />
-            <span class="text-sm">{{ selectedLanguage?.label }}</span>
-          </span>
-        </template> -->
-      </USelect>
+      <LangSwitcher/>
 
       <!-- Burger Menu -->
       <div
@@ -142,11 +148,14 @@ watch(() => route.fullPath, () => {
       </div>
     </div>
 
-    <Teleport to="body">
-        <Transition name="fade-in-out">
-            <TheBurger v-if="isBurgerOpen"/>
-        </Transition>
-    </Teleport>
+
+    <ClientOnly>
+      <Teleport to="body">
+          <Transition name="fade-in-out">
+              <TheBurger v-if="isBurgerOpen"/>
+          </Transition>
+      </Teleport>
+    </ClientOnly>
   </div>
 </template>
 

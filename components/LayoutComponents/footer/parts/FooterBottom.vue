@@ -1,33 +1,77 @@
 <script setup lang="ts">
-import Socials from '~/components/CommonComponents/Socials.vue';
+import Socials from "~/components/CommonComponents/Socials.vue";
 
-const { locale } = useI18n();
+const { locale, t } = useI18n();
 
-const { data, error } = await apiFetch(
+const pages = computed(() => [
+    {
+        id: 1,
+        title: t('nav.cars'),
+        slug: "cars"
+    },
+    {
+        id: 2,
+        title: t('nav.aboutUs'),
+        slug: "about-us"
+    },
+    {
+        id: 3,
+        title: t('nav.contactUs'),
+        slug: "contact-us"
+    }
+]);
+
+const aboutRes = await apiFetch(
   `/api/description?populate=*&locale=${locale.value}`
 );
 
-const aboutInfo = computed(() => !error.value ? data.value?.data?.description?.[0]?.children?.[0]?.text : null)
+const carRes = await apiFetch(
+  `/api/cars?locale=${locale.value}&populate=image&pagination[page]=1&pagination[pageSize]=5`
+);
 
+const aboutInfo = computed(() =>
+  !aboutRes?.error?.value
+    ? aboutRes.data?.value?.data?.description?.[0]?.children?.[0]?.text
+    : null
+);
+
+const carLinks = computed(() =>
+  !carRes?.error?.value ? carRes.data?.value?.data : null
+);
 </script>
 
 <template>
-    <div class="flex justify-between items-start">
-        <div class="max-w-[400px] flex flex-col gap-9">
-            <div v-html="aboutInfo">
-            </div>
+  <div class="flex justify-between items-start">
+    <div class="max-w-[400px] flex flex-col gap-9 flex-1">
+      <div v-html="aboutInfo"></div>
 
-            <div>
-                <Socials/>
-            </div>
-        </div>
+      <div>
+        <Socials />
+      </div>
+    </div>
 
-        <div>
-            <!-- <h2>popular cars</h2> -->
+    <div class="flex-1 flex flex-col ml-20">
+        <div class="flex gap-3 flex-col">
+            <h2 class="text-dark text-xl font-semibold">{{ $t('footer.pageLinks') }}</h2>
+        <div v-for="item in pages" :key="item?.id">
+            <NuxtLink :to="item?.slug">
+                <p class="text-primary hover:text-dark transition-all duration-300 ease-in-out text-xl font-regular">{{ item?.title }}</p>
+            </NuxtLink>
         </div>
     </div>
+    </div>
+
+    <div class="flex-1 flex gap-3 flex-col">
+        <h2 class="text-dark text-xl font-semibold">{{ $t('footer.popularCars') }}</h2>
+      <NuxtLink v-for="item in carLinks" :key="item?.id" :to="`/cars/${item?.id}-${item?.slug}`">
+        <p class="text-primary hover:text-dark transition-all duration-300 ease-in-out text-xl font-regular">{{ item?.name }}</p>
+      </NuxtLink>
+    </div>
+
+    <div>
+      <!-- <h2>popular cars</h2> -->
+    </div>
+  </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -15,7 +15,7 @@ const isActive = ref<boolean[]>([])
 
 onMounted(() => {
   // initialize reactivity array
-  isActive.value = Array(faqItems.value.length).fill(false)
+  isActive.value = Array(faqItems.value?.length).fill(false)
 })
 
 const onQuestionClick = (index: number) => {
@@ -37,13 +37,13 @@ const onQuestionClick = (index: number) => {
       <div class="relative flex w-full justify-between">
         <div>
           <h3
-            class="pr-8 text-lg font-medium text-gray-900 transition-all duration-300 ease-in-out group-hover:text-gray-600"
+            class="pr-8 text-lg font-medium text-dark transition-all duration-300 ease-in-out group-hover:text-gray-600"
           >
             {{ item.title }}
           </h3>
 
           <Vue3SlideUpDown v-model="isActive[index]" :duration="300">
-            <p class="text-gray-600 mt-2">
+            <p class="dark:text-gray-50 text-gray-600 mt-2">
               {{ item.teaser }}
             </p>
           </Vue3SlideUpDown>

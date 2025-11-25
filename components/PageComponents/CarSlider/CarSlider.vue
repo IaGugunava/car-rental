@@ -35,10 +35,10 @@ watch(
 <template>
   <div class="py-[60px]">
      <div class="grid-container flex w-full justify-between items-center mb-10">
-            <h2 class="text-xl sm:text-[50px] font-bold text-dark">Choose the car that suits you</h2>
+            <h2 class="text-xl sm:text-[50px] font-bold text-dark">{{ $t('carSlider.title') }}</h2>
 
             <NuxtLink to="/cars">
-              <CustomButton text="view more"/>
+              <CustomButton :text="$t('carSlider.viewMore')"/>
             </NuxtLink>
         </div>
     <swiper-container 

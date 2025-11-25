@@ -18,7 +18,6 @@ const aboutUsData = computed(() =>
   !error.value ? data?.value?.data?.[1] : null
 );
 
-console.log(isAboutPage.value, "about us info");
 // onMounted(async () => {
 //     await execute()
 // })
@@ -54,7 +53,7 @@ watch(
   >
     <div class="w-full">
       <NuxtImg
-        class="aspect-[1920/1080] md:aspect-[550/550] rounded-lg h-full w-full object-cover"
+        class="aspect-[1920/1080] rounded-lg h-full w-full object-cover"
         :src="
           aboutMedia(
             finalData?.image?.formats?.large?.url ||
@@ -65,7 +64,7 @@ watch(
     </div>
     <div class="w-full max-w-[550px]">
         <h1 v-if="isAboutPage" class="text-3xl font-bold text-dark mb-10">{{ finalData?.title }}</h1>
-        <p v-if="isAboutPage" class="text-xl text-gray-dark mb-10">{{ finalData?.teaser }}</p>
+        <p v-if="isAboutPage" class="text-xl text-dark mb-10">{{ finalData?.teaser }}</p>
       <div
         class="gap-7"
         :class="{

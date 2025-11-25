@@ -19,6 +19,18 @@ const carsMedia = (url: string) => {
 };
 
 const isModalOpen = ref(false)
+
+// CREATE DATABASE carrentalstrapidb;
+// CREATE USER carrentalstrapiuser WITH PASSWORD 'StrapiApi';
+// GRANT ALL PRIVILEGES ON DATABASE carrentalstrapidb TO carrentalstrapiuser;
+// ALTER ROLE carrentalstrapiuser SET client_encoding TO 'utf8';
+// ALTER ROLE carrentalstrapiuser SET default_transaction_isolation TO 'read committed';
+// ALTER ROLE carrentalstrapiuser SET timezone TO 'UTC';
+// \q
+
+// pgloader sqlite:////home/ia/Desktop/my-project/car-rental/car-rental-strapi/.tmp/data.db postgresql://carrentalstrapiuser:StrapiApi@localhost/carrentalstrapidb
+// /home/ia/Desktop/my-project/car-rental/car-rental-strapi/.tmp/data.db
+// sudo -u postgres psql -d carrentalstrapidb
 </script>
 
 <template>
@@ -26,7 +38,7 @@ const isModalOpen = ref(false)
     <div class="p-6 bg-gray-light rounded-xl h-full">
       <div class="w-full">
         <NuxtImg
-          class="aspect-[480/240] rounded-lg h-full w-full object-cover"
+          class="aspect-[1920/1080] rounded-lg h-full w-full object-cover"
           :src="
             carsMedia(
               data?.image?.[0]?.formats?.large?.url ||
@@ -43,7 +55,7 @@ const isModalOpen = ref(false)
               {{ data?.name }}
             </p>
 
-            <p class="text-gray-dark text-base">
+            <p class="text-dark text-base">
               {{ data?.type }}
             </p>
           </div>
@@ -51,32 +63,32 @@ const isModalOpen = ref(false)
             <p class="text-2xl text-primary font-semibold">
               ${{ data?.price }}
             </p>
-            <p class="text-gray-dark text-base">Price per day</p>
+            <p class="text-dark text-base">{{ $t('carCard.pricePerDay') }}</p>
           </div>
         </div>
 
         <div class="flex w-full justify-between items-center">
           <div class="flex gap-2">
-            <GearSvg class="w-6 h-6"/>
+            <GearSvg class="w-6 h-6 [&_path]:stroke-primary"/>
             <p>{{ data?.transmission }}</p>
           </div>
 
           <div class="flex gap-2">
-            <FuelSvg class="w-6 h-6"/>
+            <FuelSvg class="w-6 h-6 [&_path]:stroke-primary"/>
             <p>{{ data?.fuel }}</p>
           </div>
 
           <div class="flex gap-2">
-            <SeatSvg class="w-6 h-6"/>
+            <SeatSvg class="w-6 h-6 [&_path]:stroke-primary"/>
             <p>{{ data?.seats }}</p>
-            <p>seats</p>
+            <p>{{ $t('carCard.seats') }}</p>
           </div>
         </div>
 
         <div class="flex w-full flex-col gap-2">
-          <CustomButton class="w-full" text="Book the car already" @click="isModalOpen = true" />
+          <CustomButton class="w-full" :text="$t('carCard.bookCar')" @click="isModalOpen = true" />
           <NuxtLink class="w-full" :to="getSingleUrl('cars', data)">
-            <CustomButton class="w-full" text="view details" :type="3" />
+            <CustomButton class="w-full" :text="$t('carCard.viewDetails')" :type="3" />
           </NuxtLink>
         </div>
       </div>
@@ -88,7 +100,7 @@ const isModalOpen = ref(false)
       <!-- Modal content would go here -->
        <CustomModal
         v-if="isModalOpen"
-        title="Book Car"
+        :title="$t('carModal.title')"
         width="600px"
         @close="isModalOpen = false"
       >
@@ -101,3 +113,4 @@ const isModalOpen = ref(false)
 </template>
 
 <style scoped></style>
+

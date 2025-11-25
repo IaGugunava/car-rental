@@ -1,0 +1,172 @@
+{
+  "nav": {
+    "cars": "cars",
+    "aboutUs": "about us",
+    "contactUs": "contact us"
+  },
+  "header": {
+    "needHelp": "Need Help?",
+    "language": {
+      "english": "English",
+      "georgian": "ქართული"
+    }
+  },
+  "burger": {
+    "followSocial": "Follow us on social media"
+  },
+  "footer": {
+    "pageLinks": "Page Links",
+    "popularCars": "Popular Cars"
+  },
+  "pages": {
+    "contactUs": {
+      "title": "contact us"
+    }
+  },
+  "carSlider": {
+    "title": "Choose the car that suits you",
+    "viewMore": "view more"
+  },
+  "carCard": {
+    "pricePerDay": "Price per day",
+    "seats": "seats",
+    "bookCar": "Book the car already",
+    "viewDetails": "view details"
+  },
+  "carModal": {
+    "title": "Book Car",
+    "labels": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "selectDates": "Select Dates",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "selected": "Selected"
+    },
+    "placeholders": {
+      "name": "Enter your name",
+      "email": "Enter your email",
+      "phone": "Enter your phone number",
+      "message": "Enter your message",
+      "hour": "Hour (0-23)",
+      "min": "Min (0-59)"
+    },
+    "validation": {
+      "nameRequired": "Name is required",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email",
+      "phoneRequired": "Phone number is required",
+      "startHourRequired": "Start hour is required",
+      "startMinuteRequired": "Start minute is required",
+      "endHourRequired": "End hour is required",
+      "endMinuteRequired": "End minute is required",
+      "invalidHour": "Hour must be between 0 and 23",
+      "invalidMinute": "Minute must be between 0 and 59",
+      "fillAllFields": "Please fill in all required fields correctly",
+      "dateRequired": "Please select start and end dates"
+    },
+    "submit": "submit car",
+    "success": "Your message has been sent successfully!",
+    "error": "Failed to send booking request.",
+    "validationError": "Please select both dates and times."
+  },
+  "contactForm": {
+    "labels": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone"
+    },
+    "placeholders": {
+      "name": "Enter your name",
+      "email": "Enter your email",
+      "phone": "Enter your phone number",
+      "message": "Enter your message"
+    },
+    "submit": "submit form",
+    "success": "Your message has been sent successfully!",
+    "error": "Failed to send booking request."
+  },
+  "mainForm": {
+    "placeholders": {
+      "name": "name",
+      "phone": "phone",
+      "email": "email",
+      "selectDates": "Select dates",
+      "startTime": "Start time",
+      "endTime": "End time",
+      "selectCar": "Select car",
+      "hour": "Hour",
+      "min": "Min"
+    },
+    "validation": {
+      "nameRequired": "Name is required",
+      "phoneRequired": "Phone number is required",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email",
+      "pickUpDateRequired": "Pick up date is required",
+      "pickUpTimeRequired": "Pick up time is required",
+      "dropOffDateRequired": "Drop off date is required",
+      "dropOffTimeRequired": "Drop off time is required",
+      "carRequired": "Please select a car"
+    },
+    "toast": {
+      "error": "Error",
+      "failedToLoadCars": "Failed to load cars",
+      "validationError": "Validation Error",
+      "fillAllFields": "Please fill in all required fields correctly",
+      "success": "Success",
+      "bookingCreated": "Booking created successfully!",
+      "bookingFailed": "Failed to create booking"
+    }
+  },
+  "carInner": {
+    "bookCar": "book the car already",
+    "pricing": "Pricing",
+    "perDay": "/ day",
+    "per3to6Days": "/ day (3-6 days)",
+    "per7orMoreDays": "/ day (7+ days)",
+    "withDriver": "With Driver"
+  },
+  "aboutVideo": {
+    "invalidUrl": "Invalid YouTube URL"
+  },
+  "carDetails": {
+    "year": "Year",
+    "transmission": "Transmission",
+    "seats": "Seats",
+    "fuel": "Fuel",
+    "type": "Type",
+    "color": "Color"
+  },
+  "enums": {
+    "transmission": {
+      "Automatic": "Automatic",
+      "Manual": "Manual",
+      "Semi-Automatic": "Semi-Automatic"
+    },
+    "fuel": {
+      "Petrol": "Petrol",
+      "Diesel": "Diesel",
+      "Electric": "Electric",
+      "Hybrid": "Hybrid",
+      "Gas": "Gas"
+    },
+    "type": {
+      "Sedan": "Sedan",
+      "SUV": "SUV",
+      "Hatchback": "Hatchback",
+      "Coupe": "Coupe",
+      "Convertible": "Convertible",
+      "Wagon": "Wagon",
+      "Van": "Van",
+      "Truck": "Truck",
+      "Minivan": "Minivan"
+    }
+  },
+  "error404": {
+    "title": "Oops! Page Not Found",
+    "description": "The page you're looking for seems to have taken a wrong turn. Let's get you back on track!",
+    "goHome": "Go Back Home"
+  }
+}
