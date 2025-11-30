@@ -126,7 +126,8 @@
     "perDay": "/ day",
     "per3to6Days": "/ day (3-6 days)",
     "per7orMoreDays": "/ day (7+ days)",
-    "withDriver": "With Driver"
+    "withDriver": "With Driver",
+    "airportTransfer": "Airport Transfer"
   },
   "aboutVideo": {
     "invalidUrl": "Invalid YouTube URL"

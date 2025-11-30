@@ -5,7 +5,7 @@ import TheFooter from '~/components/LayoutComponents/footer/TheFooter.vue';
 </script>
 
 <template>
-    <div>
+    <div class="w-full overflow-x-hidden">
         <TheHeader/>
             <slot/>
         <TheFooter/>

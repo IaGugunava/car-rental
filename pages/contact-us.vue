@@ -2,7 +2,9 @@
 import ContactForm from '~/components/PageComponents/ContactForm/ContactForm.vue';
 import ContactMap from '~/components/PageComponents/ContactMap/ContactMap.vue';
 
-
+// SEO
+const seoData = await usePageSeo('contact-us');
+useSeo(seoData || undefined);
 </script>
 
 <template>

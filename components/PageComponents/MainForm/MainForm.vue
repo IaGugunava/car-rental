@@ -1,7 +1,7 @@
 <template>
-  <div class="w-full relative z-10 max-w-[1680px] mx-auto px-4">
+  <div class="w-full relative z-10 max-w-[1680px] mx-auto px-3 sm:px-4 md:px-6">
     <div
-      class="flex flex-col lg:flex-row bg-white rounded-3xl lg:rounded-full shadow-lg p-4 lg:p-6 gap-4 lg:gap-0 relative"
+      class="flex flex-col lg:flex-row bg-white rounded-3xl lg:rounded-full shadow-lg p-3 sm:p-4 lg:p-6 gap-3 sm:gap-4 lg:gap-0 relative"
     >
       <!-- Name Input -->
       <div class="flex-1 min-w-0">

@@ -126,7 +126,8 @@
     "perDay": "/ დღე",
     "per3to6Days": "/ დღე (3-6 დღე)",
     "per7orMoreDays": "/ დღე (7+ დღე)",
-    "withDriver": "მძღოლით"
+    "withDriver": "მძღოლით",
+    "airportTransfer": "აეროპორტის ტრანსფერი"
   },
   "aboutVideo": {
     "invalidUrl": "არასწორი YouTube ბმული"

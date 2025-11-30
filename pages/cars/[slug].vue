@@ -14,6 +14,20 @@ const { data, error } = await apiFetch(
 
 const carData = computed(() => (!error.value ? data?.value?.data?.filter((el: any) => el.documentId.toString() === id.value)?.[0] : null));
 
+// SEO for inner page using car data
+const config = useRuntimeConfig();
+const baseUrl = config.public.NUXT_PUBLIC_BASE_URL || '';
+
+watchEffect(() => {
+  if (carData.value) {
+    const car = carData.value;
+    useSeo({
+      title: car.title || car.name,
+      description: car.description,
+      image: car.image?.url ? `${baseUrl}${car.image.url}` : undefined,
+    });
+  }
+});
 </script>
 
 <template>

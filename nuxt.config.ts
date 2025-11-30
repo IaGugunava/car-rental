@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     "shadcn-nuxt",
     '@nuxt/fonts',
+    '@nuxtjs/sitemap',
   ],
   colorMode: {
     classSuffix: '',
@@ -31,6 +32,10 @@ export default defineNuxtConfig({
       emailjsContactTemplateId: process.env.NUXT_PUBLIC_EMAILJS_CONTACT_TEMPLATE_ID,
       emailjsBookingTemplateId: process.env.NUXT_PUBLIC_EMAILJS_BOOKING_TEMPLATE_ID
     }
+  },
+
+  site: {
+    url: process.env.NUXT_PUBLIC_SITE_URL || 'https://yourdomain.com',
   },
 
   swiper: {

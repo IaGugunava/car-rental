@@ -41,35 +41,31 @@ const carLinks = computed(() =>
 </script>
 
 <template>
-  <div class="flex justify-between items-start">
-    <div class="max-w-[400px] flex flex-col gap-9 flex-1">
-      <div v-html="aboutInfo"></div>
+  <div class="flex flex-col md:flex-row justify-between items-start gap-8 md:gap-6">
+    <div class="w-full md:max-w-[400px] flex flex-col gap-6 md:gap-9 md:flex-1">
+      <div class="text-sm sm:text-base" v-html="aboutInfo"></div>
 
       <div>
         <Socials />
       </div>
     </div>
 
-    <div class="flex-1 flex flex-col ml-20">
-        <div class="flex gap-3 flex-col">
-            <h2 class="text-dark text-xl font-semibold">{{ $t('footer.pageLinks') }}</h2>
+    <div class="w-full md:flex-1 flex flex-col md:ml-8 lg:ml-20">
+        <div class="flex gap-2 sm:gap-3 flex-col">
+            <h2 class="text-dark text-lg sm:text-xl font-semibold">{{ $t('footer.pageLinks') }}</h2>
         <div v-for="item in pages" :key="item?.id">
             <NuxtLink :to="item?.slug">
-                <p class="text-primary hover:text-dark transition-all duration-300 ease-in-out text-xl font-regular">{{ item?.title }}</p>
+                <p class="text-primary hover:text-dark transition-all duration-300 ease-in-out text-base sm:text-lg md:text-xl font-regular">{{ item?.title }}</p>
             </NuxtLink>
         </div>
     </div>
     </div>
 
-    <div class="flex-1 flex gap-3 flex-col">
-        <h2 class="text-dark text-xl font-semibold">{{ $t('footer.popularCars') }}</h2>
+    <div class="w-full md:flex-1 flex gap-2 sm:gap-3 flex-col">
+        <h2 class="text-dark text-lg sm:text-xl font-semibold">{{ $t('footer.popularCars') }}</h2>
       <NuxtLink v-for="item in carLinks" :key="item?.id" :to="`/cars/${item?.id}-${item?.slug}`">
-        <p class="text-primary hover:text-dark transition-all duration-300 ease-in-out text-xl font-regular">{{ item?.name }}</p>
+        <p class="text-primary hover:text-dark transition-all duration-300 ease-in-out text-base sm:text-lg md:text-xl font-regular">{{ item?.name }}</p>
       </NuxtLink>
-    </div>
-
-    <div>
-      <!-- <h2>popular cars</h2> -->
     </div>
   </div>
 </template>
