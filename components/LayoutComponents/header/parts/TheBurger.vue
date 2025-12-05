@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import Socials from '~/components/CommonComponents/Socials.vue';
+import LangSwitcher from './LangSwitcher.vue';
 
 </script>
 
 <template>
   <div class="w-full h-[100dvh] z-10 fixed top-[90px] left-0 bg-background">
-    <div class="flex gap-5 flex-col justify-center items-center">
+    <div class="flex gap-5 flex-col justify-center items-center pt-5">
         <NuxtLink
           class="text-dark text-lg font-semibold w-full border-b border-dark flex justify-center items-center pb-5"
           to="/cars"
@@ -30,6 +31,11 @@ import Socials from '~/components/CommonComponents/Socials.vue';
         >
         კონტაქტი
         </NuxtLink> -->
+
+        <!-- Language Switcher -->
+        <div class="w-full flex justify-center items-center pb-5">
+          <LangSwitcher/>
+        </div>
         
     </div>
 

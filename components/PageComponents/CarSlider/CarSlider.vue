@@ -8,7 +8,7 @@ import CustomButton from "~/components/UIComponents/CustomButton.vue";
 const { locale } = useI18n();
 
 const { data, execute, error } = await apiFetch(
-  `/api/cars?locale=${locale.value}&populate=image&pagination[page]=1&pagination[pageSize]=5`
+  `/api/cars?locale=${locale.value}&populate=image`
 );
 
 const carsData = computed(() => (!error.value ? data?.value?.data : null));
@@ -45,18 +45,22 @@ watch(
      class="!overflow-visible custom-swiper"
       style=""
       :space-between="30"
-      :slides-per-view="4"
       :slides-offset-before="40"
       :speed="1000"
       :breakpoints="{
           0: {
             slidesPerView: 1,
+            spaceBetween: 20,
+            slidesOffsetBefore: 40
           },
           480: {
             slidesPerView: 1,
+            spaceBetween: 20,
+            slidesOffsetBefore: 40
           },
           768: {
             slidesPerView: 2,
+            spaceBetween: 20,
           },
           1024: {
             slidesOffsetBefore: 40,

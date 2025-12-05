@@ -42,11 +42,11 @@ onMounted(async () => {
       >
         <SwiperSlide v-for="item in bannersData" :key="item?.id">
             {{ bannersData }} -->
-    <div class="relative">
-      <div class="absolute top-10 w-full flex justify-center items-center">
+    <div class="relative pb-[500px] sm:pb-[400px] lg:pb-[200px]">
+      <div class="absolute top-10 w-full flex justify-center items-center z-20">
         <MainForm/>
       </div>
-      <div class="max-h-[calc(100dvh-104px)] group w-full overflow-hidden">
+      <div class="max-h-[calc(100dvh-104px)] group w-full overflow-hidden relative">
         <NuxtImg
           class="h-full w-full object-cover aspect-[375/296] sm:aspect-[1920/1000]"
           :src="bannerMedia(bannersData?.image?.formats?.large?.url || bannersData?.image?.formats?.thumbnail?.url)"

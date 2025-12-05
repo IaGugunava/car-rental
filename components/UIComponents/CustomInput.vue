@@ -102,7 +102,7 @@ watch(
     </div>
 
     <transition name="fade-in-out">
-      <p v-if="errorText" class="upper absolute px-4 pt-3 text-[12px] text-[#FC5A40]">
+      <p v-if="errorText" class="upper absolute left-0 top-full px-4 pt-1 text-[12px] text-[#FC5A40] whitespace-nowrap z-10">
         {{ errorText }}
       </p>
     </transition>

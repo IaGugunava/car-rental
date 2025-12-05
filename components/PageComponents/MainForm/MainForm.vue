@@ -1,15 +1,11 @@
 <template>
   <div class="w-full relative z-10 max-w-[1680px] mx-auto px-3 sm:px-4 md:px-6">
     <div
-      class="flex flex-col lg:flex-row bg-white rounded-3xl lg:rounded-full shadow-lg p-3 sm:p-4 lg:p-6 gap-3 sm:gap-4 lg:gap-0 relative"
-    >
+      class="flex flex-col lg:flex-row bg-white rounded-3xl lg:rounded-full shadow-lg p-3 sm:p-4 lg:p-6 pb-8 sm:pb-10 lg:pb-6 gap-3 sm:gap-4 lg:gap-0 relative">
       <!-- Name Input -->
       <div class="flex-1 min-w-0">
-        <CustomInput
-          v-model="formData.name"
-          :has-border="false"
-          :placeholder="$t('mainForm.placeholders.name')"
-        />
+        <CustomInput v-model="formData.name" :has-border="false" :placeholder="$t('mainForm.placeholders.name')"
+          :error="v$.name.$errors[0]?.$message" @blur="v$.name.$touch()" />
       </div>
 
       <!-- Divider - Hidden on mobile -->
@@ -17,11 +13,8 @@
 
       <!-- Phone Input -->
       <div class="flex-1 min-w-0">
-        <CustomInput
-          v-model="formData.phone"
-          :has-border="false"
-          :placeholder="$t('mainForm.placeholders.phone')"
-        />
+        <CustomInput v-model="formData.phone" :has-border="false" :placeholder="$t('mainForm.placeholders.phone')"
+          :error="v$.phone.$errors[0]?.$message" @blur="v$.phone.$touch()" />
       </div>
 
       <!-- Divider - Hidden on mobile -->
@@ -29,26 +22,24 @@
 
       <!-- Email Input -->
       <div class="flex-1 min-w-0">
-        <CustomInput
-          v-model="formData.email"
-          :has-border="false"
-          :placeholder="$t('mainForm.placeholders.email')"
-        />
+        <CustomInput v-model="formData.email" type="email" :has-border="false"
+          :placeholder="$t('mainForm.placeholders.email')" :error="v$.email.$errors[0]?.$message"
+          @blur="v$.email.$touch()" />
       </div>
 
       <!-- Divider - Hidden on mobile -->
       <div class="hidden lg:block w-[1px] h-[50px] bg-gray-dark mx-4"></div>
 
       <!-- Date Range Picker -->
-      <div class="flex-1 min-w-0">
+      <div class="flex-1 min-w-0 relative">
         <UPopover>
           <div
             class="h-full flex flex-col justify-center items-start lg:items-center text-base cursor-pointer px-3 py-2 lg:p-0"
             :class="{
               'text-dark': formData.date?.start && formData.date?.end,
               'text-[#626f86]': !(formData.date?.start || formData.date?.end),
-            }"
-          >
+              'border-red-500': v$.date.$errors.length > 0
+            }" @blur="v$.date.$touch()">
             {{
               formData.date?.start && formData.date?.end
                 ? `${formatDate(formData.date.start)} - ${formatDate(formData.date.end)}`
@@ -62,6 +53,12 @@
             </div>
           </template>
         </UPopover>
+        <transition name="fade-in-out">
+          <p v-if="v$.date.$errors[0]"
+            class="upper absolute left-0 top-full px-4 pt-1 text-[12px] text-[#FC5A40] whitespace-nowrap z-10">
+            {{ v$.date.$errors[0].$message }}
+          </p>
+        </transition>
       </div>
 
       <!-- Divider - Hidden on mobile -->
@@ -71,13 +68,9 @@
       <div class="flex flex-col lg:flex-row gap-2 flex-1 min-w-0 lg:min-w-[200px]">
         <!-- Start Time -->
         <div class="flex-1 min-w-0">
-          <CustomInput
-            v-model="formData.time.start"
-            type="time"
-            :has-border="false"
-            :placeholder="$t('mainForm.placeholders.startTime')"
-            class="w-full"
-          />
+          <CustomInput v-model="formData.time.start" type="time" :has-border="false"
+            :placeholder="$t('mainForm.placeholders.startTime')" :error="v$.time.start.$errors[0]?.$message"
+            class="w-full" @blur="v$.time.start.$touch()" />
         </div>
 
         <!-- Time Separator - Hidden on mobile -->
@@ -87,13 +80,9 @@
 
         <!-- End Time -->
         <div class="flex-1 min-w-0">
-          <CustomInput
-            v-model="formData.time.end"
-            type="time"
-            :has-border="false"
-            :placeholder="$t('mainForm.placeholders.endTime')"
-            class="w-full"
-          />
+          <CustomInput v-model="formData.time.end" type="time" :has-border="false"
+            :placeholder="$t('mainForm.placeholders.endTime')" :error="v$.time.end.$errors[0]?.$message" class="w-full"
+            @blur="v$.time.end.$touch()" />
         </div>
       </div>
 
@@ -101,20 +90,20 @@
       <div class="hidden lg:block w-[1px] h-[50px] bg-gray-dark mx-4"></div>
 
       <!-- Car Selection -->
-      <div class="flex items-center justify-center lg:w-[400px]">
-        <USelect
-          v-model="formData.carId"
-          :items="cars"
-          :placeholder="$t('mainForm.placeholders.selectCar')"
-          class="w-full text-base bg-transparent border-none ring-0 text-dark"
-        />
+      <div class="flex items-center justify-center lg:w-[400px] relative">
+        <USelect v-model="formData.carId" :items="cars" :placeholder="$t('mainForm.placeholders.selectCar')"
+          class="w-full text-base bg-transparent border-none ring-0 text-dark" @blur="v$.carId.$touch()" />
+        <transition name="fade-in-out">
+          <p v-if="v$.carId.$errors[0]"
+            class="upper absolute left-0 top-full px-4 pt-1 text-[12px] text-[#FC5A40] whitespace-nowrap z-10">
+            {{ v$.carId.$errors[0].$message }}
+          </p>
+        </transition>
       </div>
 
       <!-- Submit Button -->
-      <div
-        class="flex h-[50px] justify-center items-center cursor-pointer hover:opacity-80 transition-opacity lg:ml-4"
-        @click="handleSubmit"
-      >
+      <div class="flex h-[50px] justify-center items-center cursor-pointer hover:opacity-80 transition-opacity lg:ml-4"
+        @click="handleSubmit">
         <SearchSvg class="w-6 h-6 [&_svg]:w-6 [&_svg]:h-6 [&_path]:stroke-primary" />
       </div>
     </div>
@@ -167,7 +156,7 @@ const formData = reactive<FormData>({
 });
 
 // Watch for time input changes and validate format
-watch(() => formData.time.start, (value) => {
+watch(() => formData.time.start, (value: string) => {
   if (value && value.length === 5) {
     const [hours, minutes] = value.split(':');
     const h = parseInt(hours);
@@ -178,7 +167,7 @@ watch(() => formData.time.start, (value) => {
   }
 });
 
-watch(() => formData.time.end, (value) => {
+watch(() => formData.time.end, (value: string) => {
   if (value && value.length === 5) {
     const [hours, minutes] = value.split(':');
     const h = parseInt(hours);
@@ -189,13 +178,29 @@ watch(() => formData.time.end, (value) => {
   }
 });
 
-const formatDate = (date) => {
+const formatDate = (date: CalendarDate | string) => {
   if (!date) return ''
-  const d = new Date(date)
+  const d = new Date(date as any)
   return d.toLocaleDateString(locale.value, { month: 'short', day: 'numeric' })
 }
 
 const { t } = useI18n();
+
+// Custom validator for date range
+const hasDateRange = helpers.withMessage(
+  () => t('mainForm.validation.dateRequired'),
+  (value: { start: CalendarDate | string; end: CalendarDate | string }) => {
+    return !!(value && value.start && value.end);
+  }
+);
+
+// Custom validator for time fields
+const hasTime = helpers.withMessage(
+  () => t('mainForm.validation.timeRequired'),
+  (value: string) => {
+    return !!(value && value.length > 0);
+  }
+);
 
 // Validation rules
 const rules = {
@@ -208,6 +213,17 @@ const rules = {
   email: {
     required: helpers.withMessage(() => t('mainForm.validation.emailRequired'), required),
     email: helpers.withMessage(() => t('mainForm.validation.emailInvalid'), email),
+  },
+  date: {
+    hasDateRange
+  },
+  time: {
+    start: {
+      hasTime
+    },
+    end: {
+      hasTime
+    }
   },
   carId: {
     required: helpers.withMessage(() => t('mainForm.validation.carRequired'), required),
@@ -233,9 +249,9 @@ const fetchCars = async () => {
 
     cars.value = !error.value
       ? data.value.data.map((car: Car) => ({
-          value: car.documentId,
-          label: `${car.name} ${car.brand}`,
-        }))
+        value: car.documentId,
+        label: `${car.name} ${car.brand}`,
+      }))
       : null;
   } catch (error) {
     toast.add({
@@ -251,7 +267,7 @@ const fetchCars = async () => {
 // Format date and time for Strapi datetime field (ISO 8601)
 const formatDateTime = (date: CalendarDate | string, time: string) => {
   if (!date || !time) return null;
-  
+
   // Convert CalendarDate to JS Date
   let dateObj: Date;
   if (typeof date === 'string') {
@@ -260,13 +276,13 @@ const formatDateTime = (date: CalendarDate | string, time: string) => {
     // CalendarDate has year, month, day properties
     dateObj = new Date(date.year, date.month - 1, date.day);
   }
-  
+
   // Parse the time (HH:MM)
   const [hours, minutes] = time.split(':');
-  
+
   // Set the time on the date object
   dateObj.setHours(parseInt(hours), parseInt(minutes), 0, 0);
-  
+
   // Return ISO 8601 format (e.g., "2024-11-06T14:30:00.000Z")
   return dateObj.toISOString();
 };
@@ -276,15 +292,16 @@ const { sendEmail } = useEmailJS();
 
 // Handle form submission
 const handleSubmit = async () => {
-  // const isValid = await v$.value.$validate();
+  const isValid = await v$.value.$validate();
 
-  // if (!isValid) {
-  //   toast.add({
-  //     title: t('mainForm.toast.validationError'),
-  //     description: t('mainForm.toast.fillAllFields'),
-  //   });
-  //   return;
-  // }
+  if (!isValid) {
+    toast.add({
+      title: t('mainForm.toast.validationError'),
+      description: t('mainForm.toast.fillAllFields'),
+      color: 'error'
+    });
+    return;
+  }
 
   submitting.value = true;
 
@@ -311,7 +328,7 @@ const handleSubmit = async () => {
     });
 
     // Get selected car name for email
-    const selectedCar = cars.value.find(car => car.value === formData.carId);
+    const selectedCar = cars.value.find((car: { value: number; label: string }) => car.value === formData.carId);
     const carName = selectedCar ? selectedCar.label : formData.carId || 'N/A';
 
     // Format dates for email

@@ -107,8 +107,8 @@ watch(() => route.fullPath, () => {
             <img src="../../../assets/icons/phone.svg"/>
             <div>
                 <p>{{ $t('header.needHelp') }}</p>
-                <NuxtLink to="tel:+996 247-1680">
-                    +996 247-1680
+                <NuxtLink to="tel:+555 12 88 88">
+                    +555 12 88 88
                 </NuxtLink>
             </div>
         </div>
@@ -124,9 +124,6 @@ watch(() => route.fullPath, () => {
     <div class="flex md:hidden items-center gap-3">
       <!-- Theme Toggle for Mobile -->
       <ThemeToggle/>
-
-      <!-- Language Switcher for Mobile -->
-      <LangSwitcher/>
 
       <!-- Burger Menu -->
       <div
