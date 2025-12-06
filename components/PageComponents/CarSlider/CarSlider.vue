@@ -6,6 +6,7 @@ import CarCard from "./parts/CarCard.vue";
 import CustomButton from "~/components/UIComponents/CustomButton.vue";
 
 const { locale } = useI18n();
+const route = useRoute();
 
 const { data, execute, error } = await apiFetch(
   `/api/cars?locale=${locale.value}&populate=image`
@@ -13,10 +14,21 @@ const { data, execute, error } = await apiFetch(
 
 const carsData = computed(() => (!error.value ? data?.value?.data : null));
 
+const carSliderKey = ref(0)
+
 // onMounted(async () => {
 //     await execute()
 // })
 
+watch(
+  route.fullPath,
+  () => {
+    carSliderKey.value++;
+  },
+  {
+    immediate: true
+  }
+)
 
 watch(
   locale,
@@ -41,50 +53,26 @@ watch(
               <CustomButton :text="$t('carSlider.viewMore')"/>
             </NuxtLink>
         </div>
-    <swiper-container 
-     class="!overflow-visible custom-swiper"
-      style=""
-      :space-between="30"
-      :slides-offset-before="40"
-      :speed="1000"
-      :breakpoints="{
-          0: {
-            slidesPerView: 1,
-            spaceBetween: 20,
-            slidesOffsetBefore: 40
-          },
-          480: {
-            slidesPerView: 1,
-            spaceBetween: 20,
-            slidesOffsetBefore: 40
-          },
-          768: {
-            slidesPerView: 2,
-            spaceBetween: 20,
-          },
-          1024: {
-            slidesOffsetBefore: 40,
-            slidesPerView: 2,
-          },
-          1280: {
-            slidesOffsetBefore: 80,
-            slidesPerView: 3,
-            spaceBetween: 20
-          },
-          1920: {
-            slidesPerView: 4,
-            slidesOffsetBefore: 160,
-            spaceBetween: 30
-          }
-        }"
-    >
-      <swiper-slide
-        v-for="item in carsData"
-        :key="item?.id"
-      >
-        <CarCard :data="item"/>
-      </swiper-slide>
-    </swiper-container>
+    <Swiper
+  :key="carSliderKey"
+  class="!overflow-visible custom-swiper"
+  :space-between="30"
+  :slides-offset-before="40"
+  :speed="1000"
+  :breakpoints="{
+    0: { slidesPerView: 1, spaceBetween: 20, slidesOffsetBefore: 40 },
+    480: { slidesPerView: 1, spaceBetween: 20, slidesOffsetBefore: 40 },
+    768: { slidesPerView: 2, spaceBetween: 20 },
+    1024: { slidesPerView: 2, slidesOffsetBefore: 40 },
+    1280: { slidesPerView: 3, spaceBetween: 20, slidesOffsetBefore: 80 },
+    1920: { slidesPerView: 4, spaceBetween: 30, slidesOffsetBefore: 160 },
+  }"
+>
+  <SwiperSlide v-for="item in carsData" :key="item.id">
+    <CarCard :data="item" />
+  </SwiperSlide>
+</Swiper>
+
   </div>
 </template>
 
