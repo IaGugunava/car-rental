@@ -69,9 +69,18 @@
         <!-- Start Time -->
         <div class="relative flex-1 min-w-0">
           <CustomInput ref="startTimeInput" v-model="formData.time.start" type="time" :has-border="false"
-            :error="v$.time.start.$errors[0]?.$message"
-            class="w-full cursor-pointer [&_input]:cursor-pointer [&_input::-webkit-calendar-picker-indicator]:absolute [&_input::-webkit-calendar-picker-indicator]:inset-0 [&_input::-webkit-calendar-picker-indicator]:w-full [&_input::-webkit-calendar-picker-indicator]:h-full [&_input::-webkit-calendar-picker-indicator]:opacity-0 [&_input::-webkit-calendar-picker-indicator]:cursor-pointer [&_input::-webkit-datetime-edit]:opacity-0 [&_input::-webkit-datetime-edit]:focus:opacity-100"
-            @focus="startTimeFocused = true" @blur="startTimeFocused = false; v$.time.start.$touch()" />
+            :error="v$.time.start.$errors[0]?.$message" :class="[
+              'w-full cursor-pointer',
+              '[&_input]:cursor-pointer',
+              '[&_input::-webkit-calendar-picker-indicator]:absolute',
+              '[&_input::-webkit-calendar-picker-indicator]:inset-0',
+              '[&_input::-webkit-calendar-picker-indicator]:w-full',
+              '[&_input::-webkit-calendar-picker-indicator]:h-full',
+              '[&_input::-webkit-calendar-picker-indicator]:opacity-0',
+              '[&_input::-webkit-calendar-picker-indicator]:cursor-pointer',
+              formData.time.start ? '[&_input::-webkit-datetime-edit]:opacity-100' : '[&_input::-webkit-datetime-edit]:opacity-0',
+              '[&_input::-webkit-datetime-edit]:focus:opacity-100'
+            ]" @focus="startTimeFocused = true" @blur="startTimeFocused = false; v$.time.start.$touch()" />
           <!-- Custom Placeholder -->
           <span v-if="!formData.time.start && !startTimeFocused"
             class="absolute left-3 top-1/2 -translate-y-1/2 text-[#626f86] pointer-events-none">
@@ -87,9 +96,18 @@
         <!-- End Time -->
         <div class="relative flex-1 min-w-0">
           <CustomInput ref="endTimeInput" v-model="formData.time.end" type="time" :has-border="false"
-            :error="v$.time.end.$errors[0]?.$message"
-            class="w-full cursor-pointer [&_input]:cursor-pointer [&_input::-webkit-calendar-picker-indicator]:absolute [&_input::-webkit-calendar-picker-indicator]:inset-0 [&_input::-webkit-calendar-picker-indicator]:w-full [&_input::-webkit-calendar-picker-indicator]:h-full [&_input::-webkit-calendar-picker-indicator]:opacity-0 [&_input::-webkit-calendar-picker-indicator]:cursor-pointer [&_input::-webkit-datetime-edit]:opacity-0 [&_input::-webkit-datetime-edit]:focus:opacity-100"
-            @focus="endTimeFocused = true" @blur="endTimeFocused = false; v$.time.end.$touch()" />
+            :error="v$.time.end.$errors[0]?.$message" :class="[
+              'w-full cursor-pointer',
+              '[&_input]:cursor-pointer',
+              '[&_input::-webkit-calendar-picker-indicator]:absolute',
+              '[&_input::-webkit-calendar-picker-indicator]:inset-0',
+              '[&_input::-webkit-calendar-picker-indicator]:w-full',
+              '[&_input::-webkit-calendar-picker-indicator]:h-full',
+              '[&_input::-webkit-calendar-picker-indicator]:opacity-0',
+              '[&_input::-webkit-calendar-picker-indicator]:cursor-pointer',
+              formData.time.end ? '[&_input::-webkit-datetime-edit]:opacity-100' : '[&_input::-webkit-datetime-edit]:opacity-0',
+              '[&_input::-webkit-datetime-edit]:focus:opacity-100'
+            ]" @focus="endTimeFocused = true" @blur="endTimeFocused = false; v$.time.end.$touch()" />
           <!-- Custom Placeholder -->
           <span v-if="!formData.time.end && !endTimeFocused"
             class="absolute left-3 top-1/2 -translate-y-1/2 text-[#626f86] pointer-events-none">
