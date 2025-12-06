@@ -29,7 +29,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>
+  <div class="lg:pb-[100px]">
     <!-- <Swiper
         :slides-per-view="1"
         :autoplay="{
@@ -42,7 +42,7 @@ onMounted(async () => {
       >
         <SwiperSlide v-for="item in bannersData" :key="item?.id">
             {{ bannersData }} -->
-    <div class="relative pb-[500px] sm:pb-[400px] lg:pb-[200px]">
+    <div class="relative pb-[450px] sm:pb-[400px] lg:pb-0">
       <div class="absolute top-10 w-full flex justify-center items-center z-20">
         <MainForm/>
       </div>

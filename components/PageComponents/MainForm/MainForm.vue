@@ -65,12 +65,18 @@
       <div class="hidden lg:block w-[1px] h-[50px] bg-gray-dark mx-4"></div>
 
       <!-- Time Selectors Row -->
-      <div class="flex flex-col lg:flex-row gap-2 flex-1 min-w-0 lg:min-w-[200px]">
+      <div class="flex flex-col lg:flex-row gap-2 flex-1 min-w-0 lg:min-w-[280px]">
         <!-- Start Time -->
-        <div class="flex-1 min-w-0">
-          <CustomInput v-model="formData.time.start" type="time" :has-border="false"
-            :placeholder="$t('mainForm.placeholders.startTime')" :error="v$.time.start.$errors[0]?.$message"
-            class="w-full" @blur="v$.time.start.$touch()" />
+        <div class="relative flex-1 min-w-0">
+          <CustomInput ref="startTimeInput" v-model="formData.time.start" type="time" :has-border="false"
+            :error="v$.time.start.$errors[0]?.$message"
+            class="w-full cursor-pointer [&_input]:cursor-pointer [&_input::-webkit-calendar-picker-indicator]:absolute [&_input::-webkit-calendar-picker-indicator]:inset-0 [&_input::-webkit-calendar-picker-indicator]:w-full [&_input::-webkit-calendar-picker-indicator]:h-full [&_input::-webkit-calendar-picker-indicator]:opacity-0 [&_input::-webkit-calendar-picker-indicator]:cursor-pointer [&_input::-webkit-datetime-edit]:opacity-0 [&_input::-webkit-datetime-edit]:focus:opacity-100"
+            @focus="startTimeFocused = true" @blur="startTimeFocused = false; v$.time.start.$touch()" />
+          <!-- Custom Placeholder -->
+          <span v-if="!formData.time.start && !startTimeFocused"
+            class="absolute left-3 top-1/2 -translate-y-1/2 text-[#626f86] pointer-events-none">
+            {{ $t('mainForm.placeholders.startTime') }}
+          </span>
         </div>
 
         <!-- Time Separator - Hidden on mobile -->
@@ -79,10 +85,16 @@
         </div>
 
         <!-- End Time -->
-        <div class="flex-1 min-w-0">
-          <CustomInput v-model="formData.time.end" type="time" :has-border="false"
-            :placeholder="$t('mainForm.placeholders.endTime')" :error="v$.time.end.$errors[0]?.$message" class="w-full"
-            @blur="v$.time.end.$touch()" />
+        <div class="relative flex-1 min-w-0">
+          <CustomInput ref="endTimeInput" v-model="formData.time.end" type="time" :has-border="false"
+            :error="v$.time.end.$errors[0]?.$message"
+            class="w-full cursor-pointer [&_input]:cursor-pointer [&_input::-webkit-calendar-picker-indicator]:absolute [&_input::-webkit-calendar-picker-indicator]:inset-0 [&_input::-webkit-calendar-picker-indicator]:w-full [&_input::-webkit-calendar-picker-indicator]:h-full [&_input::-webkit-calendar-picker-indicator]:opacity-0 [&_input::-webkit-calendar-picker-indicator]:cursor-pointer [&_input::-webkit-datetime-edit]:opacity-0 [&_input::-webkit-datetime-edit]:focus:opacity-100"
+            @focus="endTimeFocused = true" @blur="endTimeFocused = false; v$.time.end.$touch()" />
+          <!-- Custom Placeholder -->
+          <span v-if="!formData.time.end && !endTimeFocused"
+            class="absolute left-3 top-1/2 -translate-y-1/2 text-[#626f86] pointer-events-none">
+            {{ $t('mainForm.placeholders.endTime') }}
+          </span>
         </div>
       </div>
 
@@ -104,7 +116,7 @@
       <!-- Submit Button -->
       <div class="flex h-[50px] justify-center items-center cursor-pointer hover:opacity-80 transition-opacity lg:ml-4"
         @click="handleSubmit">
-        <SearchSvg class="w-6 h-6 [&_svg]:w-6 [&_svg]:h-6 [&_path]:stroke-primary" />
+        <SubmitSvg class="w-6 h-6 text-primary" />
       </div>
     </div>
   </div>
@@ -115,7 +127,7 @@ import { useVuelidate } from "@vuelidate/core";
 import { required, email, helpers } from "@vuelidate/validators";
 import CustomInput from "~/components/UIComponents/CustomInput.vue";
 import type { CalendarDate } from '@internationalized/date'
-import SearchSvg from "~/components/SvgComponents/SearchSvg.vue";
+import SubmitSvg from "~/components/SvgComponents/SubmitSvg.vue";
 
 const { locale } = useI18n();
 

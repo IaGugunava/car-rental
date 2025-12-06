@@ -83,6 +83,14 @@
       "phone": "Enter your phone number",
       "message": "Enter your message"
     },
+    "validation": {
+      "nameRequired": "Name is required",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email",
+      "phoneRequired": "Phone number is required",
+      "messageRequired": "Message is required",
+      "fillAllFields": "Please fill in all required fields correctly"
+    },
     "submit": "submit form",
     "success": "Your message has been sent successfully!",
     "error": "Failed to send booking request."
@@ -93,8 +101,8 @@
       "phone": "phone",
       "email": "email",
       "selectDates": "Select dates",
-      "startTime": "Start time",
-      "endTime": "End time",
+      "startTime": "Start",
+      "endTime": "End",
       "selectCar": "Select car",
       "hour": "Hour",
       "min": "Min"
@@ -104,6 +112,8 @@
       "phoneRequired": "Phone number is required",
       "emailRequired": "Email is required",
       "emailInvalid": "Please enter a valid email",
+      "dateRequired": "Please select start and end dates",
+      "timeRequired": "Time is required",
       "pickUpDateRequired": "Pick up date is required",
       "pickUpTimeRequired": "Pick up time is required",
       "dropOffDateRequired": "Drop off date is required",
